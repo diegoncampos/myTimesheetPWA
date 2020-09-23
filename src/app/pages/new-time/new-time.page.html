@@ -13,4 +13,32 @@
 
 <ion-content>
 
+  <!-- <ion-item>
+    <ion-label>Date:</ion-label>
+    <ion-datetime displayFormat="DD MM YY" placeholder="Select Date"></ion-datetime>
+  </ion-item> -->
+
+  <ion-item>
+    <ion-label position="floating">Date:</ion-label>
+    <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newDate.date"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Start Time:</ion-label>
+    <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.from"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>End Time:</ion-label>
+    <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.to"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-checkbox color="primary" [(ngModel)]="newDate.byProd" (ionChange)="byProdFocus()"></ion-checkbox>
+    <ion-label class="byProdLabel">By production</ion-label>  
+  </ion-item>
+  <ion-item [hidden]="!newDate.byProd">
+    <ion-label position="floating">Quantity</ion-label>
+    <ion-input #byProd [(ngModel)]="newDate.quantity"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" color="primary" (click)="addTime()">Add Time</ion-button>
+
 </ion-content>

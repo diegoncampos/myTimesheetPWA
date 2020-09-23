@@ -14,12 +14,12 @@ export class AppComponent implements OnInit {
   public appPages = [
     {
       title: 'My Timesheet',
-      url: '/folder/Inbox',
+      url: '/home',
       icon: 'timer'
     },
     {
       title: 'About',
-      url: '/folder/Outbox',
+      url: '/about',
       icon: 'information-circle'
     },
     // {

@@ -24,14 +24,17 @@
 
   <div class="fromToDates">
     <div class="col">
-      <strong id="from">From: "20/06/2020"</strong>
+      <strong id="from">From: {{weekInfo.from}}</strong>
     </div>
     <div class="col">
-      <strong id="to">To: "27/06/2020"</strong>
+      <strong id="to">To: {{weekInfo.to}}</strong>
     </div>
   </div>
   <div class="totalHours">
-    <strong id="total">Total weekly hours: "20"</strong>
+    <strong id="total">Total weekly hours: {{weekInfo.totalHours}}</strong>
+  </div>
+  <div class="totalHours">
+    <strong id="total">Weekly production: {{weekInfo.totalProd}}</strong>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab>
@@ -39,4 +42,36 @@
       <ion-icon name="add" (click)="addTime()"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+    <ion-card>
+      <!-- <ion-card-header>
+        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+        <ion-card-title>Card Title</ion-card-title>
+      </ion-card-header> -->
+      <ion-card-content>
+        <ion-list>
+          <ion-item-sliding *ngFor="let time of data.times; let $index=index;">
+            <ion-item>
+              <ion-label>{{time.date | date: 'dd MMM yyyy'}}</ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="time.byProd">
+              <ion-label>Quantity</ion-label>
+              <ion-label>{{time.quantity}}</ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="!time.byProd">
+              <ion-label>{{time.startTime | date: 'HH:mm'}}</ion-label>
+              <ion-label>{{time.endTime | date: 'HH:mm'}}</ion-label>
+            </ion-item>
+
+            <ion-item-options side="end">
+              <ion-item-option (click)="false">Unread</ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+
+      </ion-card-content>
+    </ion-card>
+
 </ion-content>
