@@ -43,6 +43,9 @@
     </ion-fab-button>
   </ion-fab>
 
+  <div class="content">
+    <ion-icon name="chevron-back-outline" (click)="nextWeek()"></ion-icon>
+
     <ion-card>
       <!-- <ion-card-header>
         <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
@@ -51,7 +54,7 @@
       <ion-card-content>
         <ion-list>
           <ion-item-sliding *ngFor="let time of data.times; let $index=index;">
-            <ion-item>
+            <ion-item id="listDate">
               <ion-label>{{time.date | date: 'dd MMM yyyy'}}</ion-label>
             </ion-item>
 
@@ -60,7 +63,7 @@
               <ion-label>{{time.quantity}}</ion-label>
             </ion-item>
 
-            <ion-item *ngIf="!time.byProd">
+            <ion-item id="listTimes" *ngIf="!time.byProd">
               <ion-label>{{time.startTime | date: 'HH:mm'}}</ion-label>
               <ion-label>{{time.endTime | date: 'HH:mm'}}</ion-label>
             </ion-item>
@@ -73,5 +76,9 @@
 
       </ion-card-content>
     </ion-card>
+
+    <ion-icon name="chevron-forward-outline" (click)="previousWeek()"></ion-icon>
+
+  </div>
 
 </ion-content>

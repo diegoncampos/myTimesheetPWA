@@ -19,3 +19,27 @@
     border:1px solid  #cccccc;
     padding: 10px;
 }
+
+.content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  
+  ion-icon {
+    flex-grow: 1;
+  }
+  
+  ion-card {
+    flex-grow: 11;
+  }
+  
+  #listDate {
+    font-weight: bold;
+  }
+  
+  #listTimes {
+    text-align: center;
+  }
+}

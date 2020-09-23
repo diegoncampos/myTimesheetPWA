@@ -18,8 +18,10 @@ export class HomePage implements OnInit {
     // let todayDate = moment();
     this.currentWeekNumber = moment().isoWeek();
     this.weekInfoUpdate();
+    // this.weekInfoUpdate(moment("30-09-2020", "DD-MM-YYYY"));
 
     this.getWeeklyProduction();
+    this.getWeeklyHours();
 
   
 
@@ -44,24 +46,24 @@ export class HomePage implements OnInit {
     "times": [{
       "date": "2020-08-15T00:15:06.785Z",
       "weekNumber": 5,
-      "startTime": "2020-09-18T08:15:06.785Z",
-      "endTime": "2020-09-18T17:15:06.785Z",
+      "startTime": "2020-09-24T10:12:39.191+12:00",
+      "endTime": "2020-09-24T17:12:39.191+12:00",
       "byProd": false,
       "quantity": 0
     },
     {
       "date": "2020-09-17T00:15:06.785Z",
       "weekNumber": 5,
-      "startTime": "2020-09-18T08:15:06.785Z",
-      "endTime": "2020-09-18T16:15:06.785Z",
+      "startTime": "2020-09-24T08:00:39.191+12:00",
+      "endTime": "2020-09-24T16:30:39.191+12:00",
       "byProd": false,
       "quantity": 0
     },
     {
       "date": "2020-09-18T00:15:06.785Z",
       "weekNumber": 5,
-      "startTime": "2020-09-18T08:15:06.785Z",
-      "endTime": "2020-09-18T16:30:06.785Z",
+      "startTime": "2020-09-24T10:12:39.191+12:00",
+      "endTime": "2020-09-24T13:12:39.191+12:00",
       "byProd": false,
       "quantity": 0
     },
@@ -95,48 +97,62 @@ export class HomePage implements OnInit {
       )
       if(this.newDate.quantity !== 0){
         this.getWeeklyProduction();
+        this.getWeeklyHours();
       }
     })
     return await modal.present();
   }
 
-  weekInfoUpdate(date?: number) {
-    this.weekInfo.from = moment().startOf('isoWeek').format("DD-MM-YYYY");
-    this.weekInfo.to = moment().endOf('isoWeek').format("DD-MM-YYYY");
-    var totalHours = moment();
+  weekInfoUpdate(date?: any) {
 
-    this.data.times.forEach(element => {
-      var startTime = moment(element.startTime, "HH:mm");
-      var endTime = moment(element.endTime, "HH:mm");
-      var h = endTime.diff(startTime, 'hours');
-      var m = moment.utc(endTime.diff(startTime)).format("mm")
-      // console.log("Tiempo:", h, ":", m)
-      console.log("Tiempo:", moment(h+":"+m, 'HH:mm').format('HH:mm:ss'))
-      totalHours = moment(totalHours).add(h, 'hour').add(m, 'minutes');
-    });
-
-    console.log("Horas totales: ", totalHours.format('HH:mm:ss'))
+    if(date) {
+      this.weekInfo.from = moment(date).startOf('isoWeek').format("DD-MM-YYYY");
+      this.weekInfo.to = moment(date).endOf('isoWeek').format("DD-MM-YYYY");
+    }
+    else {
+      this.weekInfo.from = moment().startOf('isoWeek').format("DD-MM-YYYY");
+      this.weekInfo.to = moment().endOf('isoWeek').format("DD-MM-YYYY");
+    }
   }
 
   getWeeklyHours() {
 
-    this.weekInfo.totalHours = 15;
+    let count: number = 0;
+    this.data.times.forEach(element => {
+
+      if (!element.byProd && element.endTime !== '' && element.startTime !== '') {
+
+        var endTime = moment(element.endTime);
+        var startTime = moment(element.startTime);
+
+        var duration = moment.duration(endTime.diff(startTime));
+        var hours = duration.asHours();
+
+        count = hours > 0 ? count + hours : count;
+
+      }
+    });
+    this.weekInfo.totalHours = count > 0 ? count : this.weekInfo.totalHours;
 
   }
 
   getWeeklyProduction() {
 
     let count:number = 0;
-
     this.data.times.forEach(element => {
-      if(element.quantity !== 0) {
+      if(element.byProd && element.quantity !== 0) {
         count = +count + +element.quantity;
       }
     });
-
-
     this.weekInfo.totalProd = count;
+  }
 
+  nextWeek() {
+
+  }
+
+  previousWeek() {
+    
   }
 
 }
