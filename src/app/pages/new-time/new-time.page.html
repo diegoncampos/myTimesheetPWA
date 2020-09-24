@@ -36,7 +36,7 @@
   </ion-item>
   <ion-item [hidden]="!newDate.byProd">
     <ion-label position="floating">Quantity</ion-label>
-    <ion-input #byProd [(ngModel)]="newDate.quantity"></ion-input>
+    <ion-input type="number" #byProd [(ngModel)]="newDate.quantity"></ion-input>
   </ion-item>
 
   <ion-button expand="block" color="primary" (click)="addTime()">Add Time</ion-button>
