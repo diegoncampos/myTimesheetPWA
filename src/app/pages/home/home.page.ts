@@ -191,4 +191,8 @@ export class HomePage implements OnInit {
     this.getWeeklyHours();    
   }
 
+  share() {
+    console.log("Share")
+  }
+
 }

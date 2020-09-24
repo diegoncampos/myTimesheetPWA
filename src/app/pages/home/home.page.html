@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="background">
   <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Hola</ion-title>
@@ -43,12 +43,18 @@
     </ion-fab-button>
   </ion-fab>
 
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" #fab>
+    <ion-fab-button color="secondary">
+      <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <div class="content">
     <ion-icon name="chevron-back-outline" (click)="previousWeek()"></ion-icon>
 
     <ion-spinner name="dots" *ngIf="data === undefined || data.times.length == 0 || currentWeek === undefined" class="homeSpinner"></ion-spinner>
 
-    <ion-card (swipeleft)="nextWeek($event,-1)"  (swiperight)="previousWeek($event,1)">
+    <ion-card (swipeleft)="nextWeek()"  (swiperight)="previousWeek()">
       <!-- <ion-card-header>
         <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
         <ion-card-title>Card Title</ion-card-title>
