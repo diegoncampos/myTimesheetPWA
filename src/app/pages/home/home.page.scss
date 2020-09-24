@@ -42,4 +42,15 @@
   #listTimes {
     text-align: center;
   }
+
+  #noContent {
+    text-align: center;
+    display: block;
+  }
+}
+.homeSpinner {
+  transform: scale(2);
+  display: block;
+  margin: auto;
+  padding-top: 30%;
 }

@@ -24,14 +24,14 @@
 
   <div class="fromToDates">
     <div class="col">
-      <strong id="from">From: {{weekInfo.from}}</strong>
+      <strong id="from">From: {{weekInfo.from | date: 'dd/MM/yyyy'}}</strong>
     </div>
     <div class="col">
-      <strong id="to">To: {{weekInfo.to}}</strong>
+      <strong id="to">To: {{weekInfo.to | date: 'dd/MM/yyyy'}}</strong>
     </div>
   </div>
   <div class="totalHours">
-    <strong id="total">Total weekly hours: {{weekInfo.totalHours}}</strong>
+    <strong id="total">Total weekly hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
   </div>
   <div class="totalHours">
     <strong id="total">Weekly production: {{weekInfo.totalProd}}</strong>
@@ -44,17 +44,22 @@
   </ion-fab>
 
   <div class="content">
-    <ion-icon name="chevron-back-outline" (click)="nextWeek()"></ion-icon>
+    <ion-icon name="chevron-back-outline" (click)="previousWeek()"></ion-icon>
 
-    <ion-card>
+    <ion-spinner name="dots" *ngIf="data === undefined || data.times.length == 0 || currentWeek === undefined" class="homeSpinner"></ion-spinner>
+
+    <ion-card (swipeleft)="nextWeek($event,-1)"  (swiperight)="previousWeek($event,1)">
       <!-- <ion-card-header>
         <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
         <ion-card-title>Card Title</ion-card-title>
       </ion-card-header> -->
+
+      <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">No Entry</ion-label>
+
       <ion-card-content>
         <ion-list>
-          <ion-item-sliding *ngFor="let time of data.times; let $index=index;">
-            <ion-item id="listDate">
+          <div *ngFor="let time of currentWeek; let $index=index;">
+            <ion-item id="listDate" color="light">
               <ion-label>{{time.date | date: 'dd MMM yyyy'}}</ion-label>
             </ion-item>
 
@@ -69,15 +74,15 @@
             </ion-item>
 
             <ion-item-options side="end">
-              <ion-item-option (click)="false">Unread</ion-item-option>
+              <ion-item-option (click)="false">Edit</ion-item-option>
             </ion-item-options>
-          </ion-item-sliding>
+          </div>
         </ion-list>
 
       </ion-card-content>
     </ion-card>
 
-    <ion-icon name="chevron-forward-outline" (click)="previousWeek()"></ion-icon>
+    <ion-icon name="chevron-forward-outline" (click)="nextWeek()"></ion-icon>
 
   </div>
 
