@@ -4,28 +4,20 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>My Timesheet</ion-title>
-    <ion-buttons slot="secondary">
+    <ion-buttons slot="secondary" (click)="presentAlertSearch()" *ngIf="!closeSearch">
       <ion-button>
         <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="secondary" (click)="finishSearch()" *ngIf="closeSearch">
+      <ion-button>
+        <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="background">
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Hola</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
-
-  <!-- <div class="fromToDates">
-    <strong id="from">From: "20/06/2020"</strong>
-    <strong id="to">To: "27/06/2020"</strong>
-  </div>
-  <div>
-    <strong id="total">Total weekly hours: "20"</strong>
-  </div> -->
 
   <div class="fromToDates">
     <div class="col">
@@ -36,10 +28,10 @@
     </div>
   </div>
   <div class="totalHours">
-    <strong id="total">Total weekly hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
+    <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
   </div>
   <div class="totalHours">
-    <strong id="total">Weekly production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
+    <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab>

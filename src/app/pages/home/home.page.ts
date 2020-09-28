@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { NewTimePage } from '../new-time/new-time.page'
 import * as moment from 'moment';
+import { NotificationsService } from '../../services/notifications.service';
 
 @Component({
   selector: 'app-home',
@@ -10,27 +11,21 @@ import * as moment from 'moment';
 })
 export class HomePage implements OnInit {
 
-  public weekInfo = {from: null, to: null, totalHours: 0, totalProd: 0};
-  public currentWeekNumber: number = 0;
-  private newDate:any = "";
+  public weekInfo = { from: null, to: null, totalHours: 0, totalProd: 0 };
+  // public currentWeekNumber: number = 0;
+  private newDate: any = "";
+  public closeSearch: boolean = false;
 
-  constructor(public modalController: ModalController) {
-    // let todayDate = moment();
-    this.currentWeekNumber = moment().isoWeek();
+  constructor(
+    public modalController: ModalController,
+    public alertController: AlertController,
+    private notificationsService: NotificationsService
+    ) {
+    // this.currentWeekNumber = moment().isoWeek();
     this.weekInfoUpdate();
 
     this.getWeeklyProduction();
     this.getWeeklyHours();
-
-  
-
-    // console.log("First Day:", moment("2020-09-08").startOf('isoWeek').format("DD-MM-YYYY"));
-    // console.log("Last Day:", moment("2020-09-08").endOf('isoWeek').format("DD-MM-YYYY"));
-
-    
-
-    // console.log("First Day: ", moment("2020-09-09").weekday(1).format("DD-MM-YYYY"))
-    // console.log("Last Day: ", moment("2020-09-09").weekday(7).format("DD-MM-YYYY"))
   }
 
   ngOnInit() {
@@ -40,7 +35,7 @@ export class HomePage implements OnInit {
   public startTime = "";
   public endTime = "";
   public currentWeek: any = [];
-  
+
   public data = {
     "email": "prueba@gmail.com",
     "times": [{
@@ -82,8 +77,8 @@ export class HomePage implements OnInit {
     const modal = await this.modalController.create({
       component: NewTimePage
     });
-    modal.onDidDismiss().then(data=>{
-      this.newDate=data.data;
+    modal.onDidDismiss().then(data => {
+      this.newDate = data.data;
       console.log("Selected Date:", this.newDate)
       if (this.newDate) {
         this.data.times.push(
@@ -96,34 +91,18 @@ export class HomePage implements OnInit {
             "quantity": this.newDate.quantity
           }
         )
-        // if (this.newDate.quantity !== 0) {
-          
-          this.weekInfoUpdate();
-        // }
+        this.weekInfoUpdate();
       }
-      
+
     })
     return await modal.present();
   }
 
-  weekInfoUpdate(date?: any) {
+  weekInfoUpdate() {
+    this.weekInfo.from = moment().startOf('isoWeek');
+    this.weekInfo.to = moment().endOf('isoWeek');
 
-
-    // if(date) {
-    //   this.weekInfo.from = moment(date).startOf('isoWeek').format("DD-MM-YYYY");
-    //   this.weekInfo.to = moment(date).endOf('isoWeek').format("DD-MM-YYYY");
-
-    //   this.listCurrentWeek(moment(date).startOf('isoWeek'), moment(date).endOf('isoWeek'));
-    // }
-    // else {
-      this.weekInfo.from = moment().startOf('isoWeek');
-      this.weekInfo.to  = moment().endOf('isoWeek');
-
-      this.listCurrentWeek(this.weekInfo.from, this.weekInfo.to);
-    // }
-
-    
-
+    this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
   }
 
   getWeeklyHours() {
@@ -149,9 +128,9 @@ export class HomePage implements OnInit {
 
   getWeeklyProduction() {
 
-    let count:number = 0;
+    let count: number = 0;
     this.currentWeek.forEach(element => {
-      if(element.byProd && element.quantity !== 0) {
+      if (element.byProd && element.quantity !== 0) {
         count = +count + +element.quantity;
       }
     });
@@ -161,43 +140,96 @@ export class HomePage implements OnInit {
   nextWeek() {
     console.log("Next week")
     this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").add(7, 'days');
-
     this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").add(7, 'days');
 
-    this.listCurrentWeek(this.weekInfo.from, this.weekInfo.to);
+    this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
   }
 
   previousWeek() {
     console.log("Previous week")
     this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").subtract(7, 'days');
-
     this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").subtract(7, 'days');
 
-    this.listCurrentWeek(this.weekInfo.from, this.weekInfo.to);
+    this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
   }
 
-  listCurrentWeek(from: any, to: any) {
+  findSelectedDays(from: any, to: any) {
 
-    console.log("listCurrentWeek")
+    console.log("findSelectedDays")
     this.currentWeek = [];
+    let week = [];
 
     this.data.times.forEach(elem => {
-      if(moment(elem.date).isBetween(from, to)) {
-        // console.log("Entro en la semana:")
-        this.currentWeek.push(elem);
+      if (moment(elem.date).isBetween(from, to)) {
+        week.push(elem);
       }
     })
+    //Sort array by Date
+    this.currentWeek = week.sort(function (a, b) {
+      return moment.utc(a.date).diff(moment.utc(b.date))
+    });
     this.getWeeklyProduction();
-    this.getWeeklyHours();    
+    this.getWeeklyHours();
   }
 
   share() {
     console.log("Share")
+    this.notificationsService.showMessage("Share is Not implemented yet.. Sorry!");
   }
 
   totalDayTime(from, to) {
     var duration = moment.duration(moment(to).diff(moment(from)));
     return duration.asHours();
+  }
+
+  async presentAlertSearch() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Find Date',
+      subHeader: 'Select from - to dates',
+      inputs: [
+        // input date with min & max
+        {
+          name: 'fromDate',
+          type: 'date',
+          placeholder: 'Username'
+          // min: '2017-03-01',
+          // max: '2018-01-12'
+        },
+        {
+          name: 'toDate',
+          type: 'date'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: data => {
+            console.log('Confirm Ok', data);
+            if(data.fromDate && data.toDate) {
+              this.weekInfo.from = moment(data.fromDate, "YYYY-MM-DD");
+              this.weekInfo.to = moment(data.toDate, "YYYY-MM-DD");
+              this.findSelectedDays(moment(data.fromDate, "YYYY-MM-DD"), moment(data.toDate, "YYYY-MM-DD"));
+              this.closeSearch = true;
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  finishSearch() {
+    this.closeSearch = false;
+    this.weekInfoUpdate();
   }
 
 }
