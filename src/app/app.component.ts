@@ -15,13 +15,20 @@ export class AppComponent implements OnInit {
     {
       title: 'My Timesheet',
       url: '/home',
-      icon: 'timer'
+      icon: 'timer',
+      action: 'selectedIndex = i'
     },
     {
       title: 'About',
       url: '/about',
-      icon: 'information-circle'
+      icon: 'information-circle',
+      action: 'selectedIndex = i'
     },
+    {
+      title: 'Exit',
+      url: '/home',
+      icon: 'exit'
+    }
     // {
     //   title: 'Favorites',
     //   url: '/folder/Favorites',
@@ -65,5 +72,12 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+  }
+
+  exitApp() {
+    console.log("Exit")
+    // if(navigator['app']) {
+      navigator['app'].exitApp();
+    // }
   }
 }

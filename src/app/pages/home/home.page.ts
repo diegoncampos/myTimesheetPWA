@@ -195,4 +195,9 @@ export class HomePage implements OnInit {
     console.log("Share")
   }
 
+  totalDayTime(from, to) {
+    var duration = moment.duration(moment(to).diff(moment(from)));
+    return duration.asHours();
+  }
+
 }

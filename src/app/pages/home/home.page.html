@@ -4,6 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>My Timesheet</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button>
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -60,23 +65,25 @@
         <ion-card-title>Card Title</ion-card-title>
       </ion-card-header> -->
 
-      <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">No Entry</ion-label>
+      <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">No Data Entry This Week</ion-label> <br>
+      <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">¯\_(ツ)_/¯</ion-label>
 
       <ion-card-content>
         <ion-list>
           <div *ngFor="let time of currentWeek; let $index=index;">
             <ion-item id="listDate" color="light">
-              <ion-label>{{time.date | date: 'dd MMM yyyy'}}</ion-label>
+              <ion-label>{{time.date | date: 'EE dd MMM yyyy'}}</ion-label>
             </ion-item>
 
             <ion-item *ngIf="time.byProd">
-              <ion-label>Quantity</ion-label>
+              <ion-label><b>Quantity:</b></ion-label>
               <ion-label>{{time.quantity |  number : '1.2-2'}}</ion-label>
             </ion-item>
 
             <ion-item id="listTimes" *ngIf="!time.byProd">
-              <ion-label>{{time.startTime | date: 'HH:mm'}}</ion-label>
-              <ion-label>{{time.endTime | date: 'HH:mm'}}</ion-label>
+              <b>From:</b> <ion-label>{{time.startTime | date: 'HH:mm'}}</ion-label>
+              <b>To:</b> <ion-label>{{time.endTime | date: 'HH:mm'}}</ion-label>
+              <b>Total: </b> <ion-label>{{totalDayTime(time.startTime, time.endTime) |  number : '1.2-2'}} Hs</ion-label>
             </ion-item>
 
             <ion-item-options side="end">
