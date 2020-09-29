@@ -4,6 +4,9 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+import { SwUpdate } from '@angular/service-worker';
+import { NotificationsService } from './services/notifications.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -29,36 +32,32 @@ export class AppComponent implements OnInit {
       url: '/home',
       icon: 'exit'
     }
-    // {
-    //   title: 'Favorites',
-    //   url: '/folder/Favorites',
-    //   icon: 'heart'
-    // },
-    // {
-    //   title: 'Archived',
-    //   url: '/folder/Archived',
-    //   icon: 'archive'
-    // },
-    // {
-    //   title: 'Trash',
-    //   url: '/folder/Trash',
-    //   icon: 'trash'
-    // },
-    // {
-    //   title: 'Spam',
-    //   url: '/folder/Spam',
-    //   icon: 'warning'
-    // }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public updates:SwUpdate,
+    private notificationsService: NotificationsService
   ) {
     this.initializeApp();
+
+    // Update PWA
+    updates.available.subscribe(event => {
+      updates.activateUpdate().then(() => this.updateApp());
+    });
   }
+
+  updateApp() {
+    document.location.reload();
+    console.log("The app is updating right now");
+    this.notificationsService.showMessage("Updating App", 5000)
+
+  }
+   //end
+  
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -75,10 +74,11 @@ export class AppComponent implements OnInit {
   }
 
   exitApp() {
+    // not working, check!
     console.log("Exit")
     window.close();
-    // if(navigator['app']) {
-      // navigator['app'].exitApp();
-    // }
+    if(navigator['app']) {
+      navigator['app'].exitApp();
+    }
   }
 }

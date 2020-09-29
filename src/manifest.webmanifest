@@ -1,6 +1,6 @@
 {
-  "name": "myTimesheet",
-  "short_name": "mTime",
+  "name": "My Timesheet",
+  "short_name": "myTimesheet",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "fullscreen",
