@@ -3,13 +3,15 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>My Timesheet</ion-title>
-    <ion-buttons slot="secondary" (click)="presentAlertSearch()" *ngIf="!closeSearch">
+    <ion-title *ngIf="!searchMode">My Timesheet</ion-title>
+    <ion-title *ngIf="searchMode">Search Result</ion-title>
+
+    <ion-buttons slot="secondary" (click)="presentAlertSearch()" *ngIf="!searchMode">
       <ion-button>
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="secondary" (click)="finishSearch()" *ngIf="closeSearch">
+    <ion-buttons slot="secondary" (click)="finishSearch()" *ngIf="searchMode">
       <ion-button>
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -34,7 +36,7 @@
     <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab *ngIf="!searchMode">
     <ion-fab-button>
       <ion-icon name="add" (click)="addTime()"></ion-icon>
     </ion-fab-button>
@@ -47,7 +49,7 @@
   </ion-fab>
 
   <div class="content">
-    <ion-icon name="chevron-back-outline" (click)="previousWeek()"></ion-icon>
+    <ion-icon name="chevron-back-outline" (click)="previousWeek()" *ngIf="!searchMode"></ion-icon>
 
     <ion-spinner name="dots" *ngIf="data === undefined || data.times.length == 0 || currentWeek === undefined" class="homeSpinner"></ion-spinner>
 
@@ -87,7 +89,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-icon name="chevron-forward-outline" (click)="nextWeek()"></ion-icon>
+    <ion-icon name="chevron-forward-outline" (click)="nextWeek()" *ngIf="!searchMode"></ion-icon>
 
   </div>
 

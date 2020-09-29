@@ -14,7 +14,7 @@ export class HomePage implements OnInit {
   public weekInfo = { from: null, to: null, totalHours: 0, totalProd: 0 };
   // public currentWeekNumber: number = 0;
   private newDate: any = "";
-  public closeSearch: boolean = false;
+  public searchMode: boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -138,19 +138,23 @@ export class HomePage implements OnInit {
   }
 
   nextWeek() {
-    console.log("Next week")
-    this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").add(7, 'days');
-    this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").add(7, 'days');
+    if (!this.searchMode) {
+      console.log("Next week")
+      this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").add(7, 'days');
+      this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").add(7, 'days');
 
-    this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
+      this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
+    }
   }
 
   previousWeek() {
-    console.log("Previous week")
-    this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").subtract(7, 'days');
-    this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").subtract(7, 'days');
+    if (!this.searchMode) {
+      console.log("Previous week")
+      this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").subtract(7, 'days');
+      this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").subtract(7, 'days');
 
-    this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
+      this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
+    }
   }
 
   findSelectedDays(from: any, to: any) {
@@ -185,14 +189,13 @@ export class HomePage implements OnInit {
   async presentAlertSearch() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Find Date',
+      header: 'Find Range of dates',
       subHeader: 'Select from - to dates',
       inputs: [
         // input date with min & max
         {
           name: 'fromDate',
-          type: 'date',
-          placeholder: 'Username'
+          type: 'date'
           // min: '2017-03-01',
           // max: '2018-01-12'
         },
@@ -210,14 +213,15 @@ export class HomePage implements OnInit {
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Ok',
+          text: 'Search',
           handler: data => {
             console.log('Confirm Ok', data);
             if(data.fromDate && data.toDate) {
               this.weekInfo.from = moment(data.fromDate, "YYYY-MM-DD");
               this.weekInfo.to = moment(data.toDate, "YYYY-MM-DD");
-              this.findSelectedDays(moment(data.fromDate, "YYYY-MM-DD"), moment(data.toDate, "YYYY-MM-DD"));
-              this.closeSearch = true;
+              // Added one day in 'to date' in order to include that date
+              this.findSelectedDays(moment(data.fromDate, "YYYY-MM-DD"), moment(data.toDate, "YYYY-MM-DD").add(1, 'days'));
+              this.searchMode = true;
             }
           }
         }
@@ -228,7 +232,7 @@ export class HomePage implements OnInit {
   }
 
   finishSearch() {
-    this.closeSearch = false;
+    this.searchMode = false;
     this.weekInfoUpdate();
   }
 

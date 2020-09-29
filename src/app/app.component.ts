@@ -76,8 +76,9 @@ export class AppComponent implements OnInit {
 
   exitApp() {
     console.log("Exit")
+    window.close();
     // if(navigator['app']) {
-      navigator['app'].exitApp();
+      // navigator['app'].exitApp();
     // }
   }
 }
