@@ -6,12 +6,12 @@
     <ion-title *ngIf="!searchMode">My Timesheet</ion-title>
     <ion-title *ngIf="searchMode">Search Result</ion-title>
 
-    <ion-buttons slot="secondary" (click)="presentAlertSearch()" *ngIf="!searchMode">
+    <ion-buttons slot="end" (click)="presentAlertSearch()" *ngIf="!searchMode">
       <ion-button>
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="secondary" (click)="finishSearch()" *ngIf="searchMode">
+    <ion-buttons slot="end" (click)="finishSearch()" *ngIf="searchMode">
       <ion-button>
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
