@@ -7,6 +7,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SwUpdate } from '@angular/service-worker';
 import { NotificationsService } from './services/notifications.service';
 
+import { AuthenticationService } from "../app/services/authentication-service.service";
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -14,6 +17,7 @@ import { NotificationsService } from './services/notifications.service';
 })
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
+  public user = {email: 'user@email.com'};
   public appPages = [
     {
       title: 'My Timesheet',
@@ -28,9 +32,9 @@ export class AppComponent implements OnInit {
       action: 'selectedIndex = i'
     },
     {
-      title: 'Exit',
+      title: 'Log Out',
       url: '/home',
-      icon: 'exit'
+      icon: 'log-out'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
@@ -40,7 +44,9 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public updates:SwUpdate,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    public authService: AuthenticationService,
+    public router: Router, 
   ) {
     this.initializeApp();
 
@@ -57,13 +63,15 @@ export class AppComponent implements OnInit {
 
   }
    //end
-  
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    let info = JSON.parse(localStorage.getItem("user"));
+    console.log("info", info)
+    this.user.email = info? info.email: '';
   }
 
   ngOnInit() {
@@ -74,11 +82,10 @@ export class AppComponent implements OnInit {
   }
 
   exitApp() {
-    // not working, check!
-    console.log("Exit")
-    window.close();
-    if(navigator['app']) {
-      navigator['app'].exitApp();
-    }
+    this.authService.SignOut().then( () => {
+      this.user.email = 'user@email.com';
+      this.router.navigate(['login']);
+    })
+    
   }
 }

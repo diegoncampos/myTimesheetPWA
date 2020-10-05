@@ -21,6 +21,10 @@ export class MyHammerConfig extends HammerGestureConfig {
 }
 
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 
 
 @NgModule({
@@ -32,7 +36,10 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     NewTimePageModule,
-    HammerModule
+    HammerModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
   ],
   providers: [
     StatusBar,
