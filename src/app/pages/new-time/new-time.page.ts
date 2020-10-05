@@ -27,7 +27,6 @@ export class NewTimePage implements OnInit {
   }
 
   byProdFocus() {
-    console.log("Entro")
     this.guestElement.setFocus();
   }
 
