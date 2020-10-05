@@ -79,7 +79,6 @@ export class HomePage implements OnInit {
     });
     modal.onDidDismiss().then(data => {
       this.newDate = data.data;
-      console.log("Selected Date:", this.newDate)
       if (this.newDate) {
         this.data.times.push(
           {
@@ -139,7 +138,7 @@ export class HomePage implements OnInit {
 
   nextWeek() {
     if (!this.searchMode) {
-      console.log("Next week")
+      // console.log("Next week")
       this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").add(7, 'days');
       this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").add(7, 'days');
 
@@ -149,7 +148,7 @@ export class HomePage implements OnInit {
 
   previousWeek() {
     if (!this.searchMode) {
-      console.log("Previous week")
+      // console.log("Previous week")
       this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").subtract(7, 'days');
       this.weekInfo.to = moment(this.weekInfo.to, "DD-MM-YYYY").subtract(7, 'days');
 
@@ -159,7 +158,6 @@ export class HomePage implements OnInit {
 
   findSelectedDays(from: any, to: any) {
 
-    console.log("findSelectedDays")
     this.currentWeek = [];
     let week = [];
 

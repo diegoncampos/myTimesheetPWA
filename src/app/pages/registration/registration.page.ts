@@ -11,6 +11,9 @@ import { AuthenticationService } from "../../services/authentication-service.ser
 })
 export class RegistrationPage implements OnInit {
 
+  public confPass: boolean = false;
+  public login = {email:'', password: '', confPassword: ''}
+
   constructor(
     public authService: AuthenticationService,
     public router: Router,
@@ -20,14 +23,21 @@ export class RegistrationPage implements OnInit {
   ngOnInit() {
   }
 
-  signUp(email, password) {
-    this.authService.RegisterUser(email.value, password.value)
+  signUp() {
+    if (this.login.password === this.login.confPassword) {
+      this.authService.RegisterUser(this.login.email, this.login.password)
       .then((res) => {
         this.router.navigate(['home']);
       }).catch((error) => {
         // window.alert(error.message)
         this.notificationsService.showMessage(error.message);
       })
+    }
+    else {
+      this.notificationsService.showMessage("Password and Confirm Password have to be the same")
+      this.confPass = true;
+    }
+    
   }
 
 }

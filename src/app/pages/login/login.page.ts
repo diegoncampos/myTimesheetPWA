@@ -22,6 +22,10 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    this.user = {email: '', password: ''};
+  }
+
   logIn() {
     this.authService.SignIn(this.user.email, this.user.password)
       .then((res) => {
