@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
         this.loggedIn = this.authService.isLoggedIn;
         return true;
       }
-      this.notificationsService.showMessage("Access denied! please log in.")
+      // this.notificationsService.showMessage("Access denied! please log in.")
       this.router.navigateByUrl('/login');
       return false;
   }
