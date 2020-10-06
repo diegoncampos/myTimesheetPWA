@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { AuthenticationService } from "../../services/authentication-service.service";
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
+
 
 
 @Component({
@@ -12,12 +15,13 @@ import { AuthenticationService } from "../../services/authentication-service.ser
 export class RegistrationPage implements OnInit {
 
   public confPass: boolean = false;
-  public login = {email:'', password: '', confPassword: ''}
+  public login = {name: '', email:'', password: '', confPassword: ''}
 
   constructor(
     public authService: AuthenticationService,
     public router: Router,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
@@ -27,10 +31,21 @@ export class RegistrationPage implements OnInit {
     if (this.login.password === this.login.confPassword) {
       this.authService.RegisterUser(this.login.email, this.login.password)
       .then((res) => {
+        //Create user
+        let user:User = {
+          email: res.user.email,
+          displayName: this.login.name,
+          photoURL: '',
+          groupId: 1,
+          times: []
+        }
+        this.userService.newUser(res.user.uid, user);
+
         this.router.navigate(['home']);
       }).catch((error) => {
         // window.alert(error.message)
         this.notificationsService.showMessage(error.message);
+        console.log("singup error", error.message)
       })
     }
     else {

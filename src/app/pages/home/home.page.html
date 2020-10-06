@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title *ngIf="!searchMode">My Timesheet</ion-title>
+    <ion-title *ngIf="!searchMode">{{userInfo.displayName}}'s Timesheet</ion-title>
     <ion-title *ngIf="searchMode">Search Result</ion-title>
 
     <ion-buttons slot="end" (click)="presentAlertSearch()" *ngIf="!searchMode">
@@ -51,9 +51,9 @@
   <div class="content">
     <ion-icon name="chevron-back-outline" (click)="previousWeek()" *ngIf="!searchMode"></ion-icon>
 
-    <ion-spinner name="dots" *ngIf="data === undefined || data.times.length == 0 || currentWeek === undefined" class="homeSpinner"></ion-spinner>
+    <ion-spinner name="dots" *ngIf="showSpinner" class="homeSpinner"></ion-spinner>
 
-    <ion-card (swipeleft)="nextWeek()"  (swiperight)="previousWeek()">
+    <ion-card (swipeleft)="nextWeek()"  (swiperight)="previousWeek()" *ngIf="!showSpinner">
       <!-- <ion-card-header>
         <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
         <ion-card-title>Card Title</ion-card-title>
@@ -77,7 +77,9 @@
             <ion-item id="listTimes" *ngIf="!time.byProd">
               <b>From:</b> <ion-label>{{time.startTime | date: 'HH:mm'}}</ion-label>
               <b>To:</b> <ion-label>{{time.endTime | date: 'HH:mm'}}</ion-label>
-              <b>Total: </b> <ion-label>{{totalDayTime(time.startTime, time.endTime) |  number : '1.2-2'}} Hs</ion-label>
+              <p>
+                <b>Total: </b> <ion-label>{{totalDayTime(time.startTime, time.endTime) |  number : '1.2-2'}} Hs</ion-label>
+              </p>
             </ion-item>
 
             <ion-item-options side="end">

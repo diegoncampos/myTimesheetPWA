@@ -3,6 +3,9 @@ import { ModalController, AlertController } from '@ionic/angular';
 import { NewTimePage } from '../new-time/new-time.page'
 import * as moment from 'moment';
 import { NotificationsService } from '../../services/notifications.service';
+import { UserService } from '../../services/user.service'
+import { Times } from 'src/app/models/times';
+
 
 @Component({
   selector: 'app-home',
@@ -12,66 +15,80 @@ import { NotificationsService } from '../../services/notifications.service';
 export class HomePage implements OnInit {
 
   public weekInfo = { from: null, to: null, totalHours: 0, totalProd: 0 };
-  // public currentWeekNumber: number = 0;
   private newDate: any = "";
   public searchMode: boolean = false;
+  public currentWeek: any = [];
+  public userInfo: any = {displayName: 'User', uid:'', times: []};
+  public showSpinner:boolean = true;
 
   constructor(
     public modalController: ModalController,
     public alertController: AlertController,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private userService: UserService
     ) {
-    // this.currentWeekNumber = moment().isoWeek();
     this.weekInfoUpdate();
 
     this.getWeeklyProduction();
     this.getWeeklyHours();
   }
+  
 
   ngOnInit() {
   }
 
-  public date = "";
-  public startTime = "";
-  public endTime = "";
-  public currentWeek: any = [];
+  ionViewWillEnter() {
+    this.userInfo.uid = JSON.parse(localStorage.getItem('user')).uid;
+    this.userService.getUser(this.userInfo.uid).subscribe(res => {
+      console.log("Traigo User:", res.data())
+      this.userInfo = {
+        displayName: res.data().displayName,
+        email: res.data().email,
+        groupId: 1,
+        photoURL: "",
+        times: res.data().times
+      }
+      this.weekInfoUpdate();
+      this.showSpinner = false;
+    })
+  }
 
-  public data = {
-    "email": "prueba@gmail.com",
-    "times": [{
-      "date": "2020-08-15T00:15:06.785Z",
-      "weekNumber": 5,
-      "startTime": "2020-09-24T10:12:39.191+12:00",
-      "endTime": "2020-09-24T17:12:39.191+12:00",
-      "byProd": false,
-      "quantity": 0
-    },
-    {
-      "date": "2020-09-22T00:15:06.785Z",
-      "weekNumber": 5,
-      "startTime": "2020-09-24T08:00:39.191+12:00",
-      "endTime": "2020-09-24T16:30:39.191+12:00",
-      "byProd": false,
-      "quantity": 0
-    },
-    {
-      "date": "2020-09-24T00:15:06.785Z",
-      "weekNumber": 5,
-      "startTime": "2020-09-24T10:12:39.191+12:00",
-      "endTime": "2020-09-24T13:12:39.191+12:00",
-      "byProd": false,
-      "quantity": 0
-    },
-    {
-      "date": "2020-09-29T00:15:06.785Z",
-      "weekNumber": 5,
-      "startTime": "",
-      "endTime": "",
-      "byProd": true,
-      "quantity": 25
-    }
-    ]
-  };
+  // public data = {
+  //   "email": "prueba@gmail.com",
+  //   "times": [{
+  //     "date": "2020-08-15T00:15:06.785Z",
+  //     "weekNumber": 5,
+  //     "startTime": "2020-09-24T10:12:39.191+12:00",
+  //     "endTime": "2020-09-24T17:12:39.191+12:00",
+  //     "byProd": false,
+  //     "quantity": 0
+  //   },
+  //   {
+  //     "date": "2020-09-22T00:15:06.785Z",
+  //     "weekNumber": 5,
+  //     "startTime": "2020-09-24T08:00:39.191+12:00",
+  //     "endTime": "2020-09-24T16:30:39.191+12:00",
+  //     "byProd": false,
+  //     "quantity": 0
+  //   },
+  //   {
+  //     "date": "2020-09-24T00:15:06.785Z",
+  //     "weekNumber": 5,
+  //     "startTime": "2020-09-24T10:12:39.191+12:00",
+  //     "endTime": "2020-09-24T13:12:39.191+12:00",
+  //     "byProd": false,
+  //     "quantity": 0
+  //   },
+  //   {
+  //     "date": "2020-09-29T00:15:06.785Z",
+  //     "weekNumber": 5,
+  //     "startTime": "",
+  //     "endTime": "",
+  //     "byProd": true,
+  //     "quantity": 25
+  //   }
+  //   ]
+  // };
 
   async addTime() {
     const modal = await this.modalController.create({
@@ -80,16 +97,16 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then(data => {
       this.newDate = data.data;
       if (this.newDate) {
-        this.data.times.push(
-          {
-            "date": this.newDate.date,
-            "weekNumber": 5,
-            "startTime": this.newDate.from,
-            "endTime": this.newDate.to,
-            "byProd": this.newDate.byProd,
-            "quantity": this.newDate.quantity
-          }
-        )
+        let newTime: Times = {
+          "date": this.newDate.date,
+          "startTime": this.newDate.from,
+          "endTime": this.newDate.to,
+          "byProd": this.newDate.byProd,
+          "quantity": this.newDate.quantity
+        }
+        this.userInfo.times.push(newTime);
+        let uid = JSON.parse(localStorage.getItem('user')).uid;
+        this.userService.addTime(uid, this.userInfo.times);
         this.weekInfoUpdate();
       }
 
@@ -161,7 +178,7 @@ export class HomePage implements OnInit {
     this.currentWeek = [];
     let week = [];
 
-    this.data.times.forEach(elem => {
+    this.userInfo.times.forEach(elem => {
       if (moment(elem.date).isBetween(from, to)) {
         week.push(elem);
       }
@@ -232,6 +249,15 @@ export class HomePage implements OnInit {
   finishSearch() {
     this.searchMode = false;
     this.weekInfoUpdate();
+  }
+
+  showDescription(item) {
+    // this.purchases.forEach(elem =>{
+    //   if(item !== elem){
+    //     elem.showDescription = false;
+    //   }
+    // })
+    item.showDescription = !item.showDescription;
   }
 
 }

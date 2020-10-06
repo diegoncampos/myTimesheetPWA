@@ -8,7 +8,12 @@
 </ion-header>
 
 <ion-content>
-  <form>    
+  <form>
+    <ion-item lines="full">
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" [(ngModel)]="login.name" name="name"></ion-input>
+    </ion-item> 
+
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
       <ion-input type="text" [(ngModel)]="login.email" name="email"></ion-input>
