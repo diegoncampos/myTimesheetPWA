@@ -118,6 +118,42 @@ export class HomePage implements OnInit {
     return await modal.present();
   }
 
+  async onPress(time) {
+    console.log("TIME", moment(time.date).format('ddd DD MMM YYYY'))
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: moment(time.date).format('dddd DD MMM YYYY'),
+      subHeader: 'Edit or Delete date entry',
+      // message: 'This is an alert message.',
+      buttons: [
+        {
+          text: 'Edit',
+          role: 'edit',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Edit Date');
+          }
+        },
+        {
+          text: 'Delete',
+          role: 'delete',
+          handler: () => {
+            console.log('Delete Date');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   weekInfoUpdate() {
     this.weekInfo.from = moment().startOf('isoWeek');
     this.weekInfo.to = moment().endOf('isoWeek');
