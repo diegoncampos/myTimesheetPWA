@@ -12,7 +12,16 @@ export class NewTimePage implements OnInit {
 
   constructor(private modalController: ModalController) { }
 
-  public newDate:any = {date: moment().toISOString(), from: '', to: '', byProd: false, quantity: null};
+  public newDate:any = {
+    date: moment().toISOString(),
+    from: '',
+    to: '',
+    byProd: false,
+    quantity: null,
+    hadLunch: true,
+    lunchTime: 30,
+    comments: null
+  };
   @ViewChild('byProd', {  static: false })  guestElement: IonInput;
 
   ngOnInit() {

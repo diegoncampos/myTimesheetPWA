@@ -63,8 +63,8 @@
       <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">¯\_(ツ)_/¯</ion-label>
 
       <ion-card-content>
-        <ion-list>
-          <div *ngFor="let time of currentWeek; let $index=index;">
+        <ion-list lines="none">
+          <div *ngFor="let time of currentWeek; let $index=index;" (click)="showDetailsF(time)">
             <ion-item id="listDate" color="bg">
               <ion-label>{{time.date | date: 'EE dd MMM yyyy'}}</ion-label>
             </ion-item>
@@ -78,9 +78,13 @@
               <b>From:</b> <ion-label>{{time.startTime | date: 'HH:mm'}}</ion-label>
               <b>To:</b> <ion-label>{{time.endTime | date: 'HH:mm'}}</ion-label>
               <p>
-                <b>Total: </b> <ion-label>{{totalDayTime(time.startTime, time.endTime) |  number : '1.2-2'}} Hs</ion-label>
+                <b>Total: </b> <ion-label>{{totalDayTime(time) |  number : '1.2-2'}} Hs</ion-label>
               </p>
             </ion-item>
+            <div *ngIf="time.showDetails">
+              <ion-label *ngIf="time.hadLunch" id="hadLunch">Had Lunch - {{time.lunchTime}} minutes.</ion-label>
+              <ion-label *ngIf="time.comments" id="hadLunch">{{time.comments}}.</ion-label>
+            </div>
 
             <ion-item-options side="end">
               <ion-item-option (click)="false">Edit</ion-item-option>

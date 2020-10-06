@@ -20,6 +20,7 @@ export class HomePage implements OnInit {
   public currentWeek: any = [];
   public userInfo: any = {displayName: 'User', uid:'', times: []};
   public showSpinner:boolean = true;
+  // public showDetails:boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -98,11 +99,14 @@ export class HomePage implements OnInit {
       this.newDate = data.data;
       if (this.newDate) {
         let newTime: Times = {
-          "date": this.newDate.date,
-          "startTime": this.newDate.from,
-          "endTime": this.newDate.to,
-          "byProd": this.newDate.byProd,
-          "quantity": this.newDate.quantity
+          date: this.newDate.date,
+          startTime: this.newDate.from,
+          endTime: this.newDate.to,
+          byProd: this.newDate.byProd,
+          quantity: this.newDate.quantity,
+          hadLunch: this.newDate.byProd? false : this.newDate.hadLunch,
+          lunchTime: this.newDate.byProd? null : this.newDate.lunchTime,
+          comments: this.newDate.comments
         }
         this.userInfo.times.push(newTime);
         let uid = JSON.parse(localStorage.getItem('user')).uid;
@@ -132,6 +136,9 @@ export class HomePage implements OnInit {
         var startTime = moment(element.startTime);
 
         var duration = moment.duration(endTime.diff(startTime));
+        if (element.hadLunch) {
+          duration.subtract(element.lunchTime, 'minutes');
+        }
         var hours = duration.asHours();
 
         count = hours > 0 ? count + hours : count;
@@ -196,8 +203,12 @@ export class HomePage implements OnInit {
     this.notificationsService.showMessage("Share is Not implemented yet.. Sorry!");
   }
 
-  totalDayTime(from, to) {
-    var duration = moment.duration(moment(to).diff(moment(from)));
+  totalDayTime(time) {
+    var duration = moment.duration(moment(time.endTime).diff(moment(time.startTime)));
+    // console.log("TIME", time)
+    if (time.hadLunch) {
+      duration.subtract(time.lunchTime, 'minutes');
+    }
     return duration.asHours();
   }
 
@@ -258,6 +269,13 @@ export class HomePage implements OnInit {
     //   }
     // })
     item.showDescription = !item.showDescription;
+  }
+
+  showDetailsF(time) {
+    this.currentWeek.forEach(elem => {
+      elem.showDetails = false;
+    });
+    time.showDetails = !time.showDetails;
   }
 
 }

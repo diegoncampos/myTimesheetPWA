@@ -70,7 +70,6 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
     });
     let info = JSON.parse(localStorage.getItem("user"));
-    console.log("info", info)
     this.user.email = info? info.email: '';
   }
 

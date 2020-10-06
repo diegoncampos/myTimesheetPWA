@@ -3,5 +3,8 @@ export interface Times {
     startTime: string,
     endTime: string,
     byProd: boolean,
-    quantity: number
+    quantity: number,
+    hadLunch?: boolean,
+    lunchTime?: number,
+    comments?: string
 }
