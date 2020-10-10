@@ -15,7 +15,6 @@ import { Times } from 'src/app/models/times';
 export class HomePage implements OnInit {
 
   public weekInfo = { from: null, to: null, totalHours: 0, totalProd: 0 };
-  private newDate: any = "";
   public searchMode: boolean = false;
   public currentWeek: any = [];
   public userInfo: any = {displayName: 'User', uid:'', times: []};
@@ -41,7 +40,7 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.userInfo.uid = JSON.parse(localStorage.getItem('user')).uid;
     this.userService.getUser(this.userInfo.uid).subscribe(res => {
-      console.log("Traigo User:", res.data())
+      // console.log("Traigo User:", res.data())
       this.userInfo = {
         displayName: res.data().displayName,
         email: res.data().email,
@@ -96,17 +95,17 @@ export class HomePage implements OnInit {
       component: NewTimePage
     });
     modal.onDidDismiss().then(data => {
-      this.newDate = data.data;
-      if (this.newDate) {
+      let newDate = data.data;
+      if (newDate) {
         let newTime: Times = {
-          date: this.newDate.date,
-          startTime: this.newDate.from,
-          endTime: this.newDate.to,
-          byProd: this.newDate.byProd,
-          quantity: this.newDate.quantity,
-          hadLunch: this.newDate.byProd? false : this.newDate.hadLunch,
-          lunchTime: this.newDate.byProd? null : this.newDate.lunchTime,
-          comments: this.newDate.comments
+          date: newDate.date,
+          startTime: newDate.startTime,
+          endTime: newDate.endTime,
+          byProd: newDate.byProd,
+          quantity: newDate.quantity,
+          hadLunch: newDate.byProd? false : newDate.hadLunch,
+          lunchTime: newDate.byProd? null : newDate.lunchTime,
+          comments: newDate.comments
         }
         this.userInfo.times.push(newTime);
         let uid = JSON.parse(localStorage.getItem('user')).uid;
@@ -118,27 +117,48 @@ export class HomePage implements OnInit {
     return await modal.present();
   }
 
-  async onPress(time) {
-    console.log("TIME", moment(time.date).format('ddd DD MMM YYYY'))
+  async editTime(time) {
+    const modal = await this.modalController.create({
+      component: NewTimePage,
+      componentProps: {editMode: true, time: time}
+    });
+    modal.onDidDismiss().then(data => {
+      let newDate = data.data;
+      if(newDate) {
+        this.userInfo.times.forEach((elem, index, object) => {
+          if (elem === time) {
+            elem = newDate;
+            // Close details after update
+            elem.showDetails = false;
+            let uid = JSON.parse(localStorage.getItem('user')).uid;
+            this.userService.addTime(uid, this.userInfo.times);
+            this.weekInfoUpdate();
+          }
+        });
+      }
+    })
+    return await modal.present();
+  }
+
+  async removeTime(time) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
+      cssClass: 'modalStyle',
       header: moment(time.date).format('dddd DD MMM YYYY'),
-      subHeader: 'Edit or Delete date entry',
+      subHeader: time.byProd ? "Quantity:" + time.quantity : "From: " + moment(time.startTime).format('HH:mm') + " - To: " + moment(time.endTime).format('HH:mm'),
       // message: 'This is an alert message.',
       buttons: [
         {
-          text: 'Edit',
-          role: 'edit',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Edit Date');
-          }
-        },
-        {
-          text: 'Delete',
-          role: 'delete',
+          text: 'Remove',
+          role: 'remove',
           handler: () => {
-            console.log('Delete Date');
+            this.userInfo.times.forEach((elem, index, object) => {
+              if (elem === time) {
+                object.splice(index, 1)
+                let uid = JSON.parse(localStorage.getItem('user')).uid;
+                this.userService.addTime(uid, this.userInfo.times);
+                this.weekInfoUpdate();
+              }
+            });
           }
         },
         {
@@ -150,9 +170,55 @@ export class HomePage implements OnInit {
         }
       ]
     });
+    return await alert.present();
+  }
 
+  async onPress(time) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: moment(time.date).format('dddd DD MMM YYYY'),
+      subHeader: 'Edit or Delete date entry',
+      // message: 'This is an alert message.',
+      buttons: [
+        {
+          text: 'Edit',
+          role: 'edit',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            this.editTime(time);
+          }
+        },
+        {
+          text: 'Remove',
+          role: 'remove',
+          handler: () => {
+            this.removeTime(time);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel');
+          }
+        }
+      ]
+    });
     await alert.present();
   }
+
+  // removeTime(time:any) {
+  //   console.log("Remove:", time)
+  //   this.userInfo.times.forEach((elem, index, object) => {
+  //     if(elem === time) {
+  //       console.log("encomntre", elem, "Index:", index)
+  //       object.splice(index, 1)
+  //       let uid = JSON.parse(localStorage.getItem('user')).uid;
+  //       this.userService.addTime(uid, this.userInfo.times);
+  //       this.weekInfoUpdate();
+  //     }
+  //   });
+  // }
 
   weekInfoUpdate() {
     this.weekInfo.from = moment().startOf('isoWeek');

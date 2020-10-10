@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonInput, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
+import { Times } from 'src/app/models/times';
 
 
 @Component({
@@ -10,28 +11,35 @@ import * as moment from 'moment';
 })
 export class NewTimePage implements OnInit {
 
-  constructor(private modalController: ModalController) { }
+  @Input() time: Times;
+  @Input() editMode: boolean;
+  @ViewChild('byProd', {  static: false })  guestElement: IonInput;
 
   public newDate:any = {
     date: moment().toISOString(),
-    from: '',
-    to: '',
+    startTime: '',
+    endTime: '',
     byProd: false,
     quantity: null,
     hadLunch: true,
     lunchTime: 30,
     comments: null
   };
-  @ViewChild('byProd', {  static: false })  guestElement: IonInput;
 
+  constructor(private modalController: ModalController) {}
+  
   ngOnInit() {
+    console.log("Me llega:", this.time)
+    if (this.editMode) {
+      this.newDate = this.time;
+    }
   }
 
   closeModal() {
     this.modalController.dismiss();
   }
 
-  addTime() {
+  saveTime() {
     this.modalController.dismiss(this.newDate);
   }
 

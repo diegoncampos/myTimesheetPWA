@@ -7,7 +7,8 @@
         </ion-button>
       </ion-buttons>
     </ion-buttons>
-    <ion-title>Add Time</ion-title>
+    <ion-title *ngIf="!editMode">Add Time</ion-title>
+    <ion-title *ngIf="editMode">Edit Time</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -24,11 +25,11 @@
   </ion-item>
   <ion-item>
     <ion-label>Start Time:</ion-label>
-    <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.from"></ion-datetime>
+    <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.startTime"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>End Time:</ion-label>
-    <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.to"></ion-datetime>
+    <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.endTime"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-checkbox color="primary" [(ngModel)]="newDate.byProd" (ionChange)="byProdFocus()"></ion-checkbox>
@@ -53,6 +54,8 @@
     <ion-input [(ngModel)]="newDate.comments"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" color="primary" (click)="addTime()">Add Time</ion-button>
+  <!-- <ion-button expand="block" color="primary" (click)="saveTime()">Add Time</ion-button> -->
+  <ion-button expand="block" color="primary" (click)="saveTime()">{{ editMode ? ('Update') : ('Save') }}</ion-button>
+
 
 </ion-content>
