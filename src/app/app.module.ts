@@ -18,6 +18,13 @@ export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     swipe: { direction: Hammer.DIRECTION_ALL },
   };
+  // Fix verticall scroll when use hammer on an element  (https://github.com/hammerjs/hammer.js/issues/1014)
+  buildHammer(element: HTMLElement) {
+    let mc = new Hammer(element, {
+      touchAction: "auto",
+    });
+    return mc;
+  }
 }
 
 
