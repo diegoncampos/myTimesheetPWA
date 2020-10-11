@@ -12,6 +12,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { NewTimePageModule } from './pages/new-time/new-time.module';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
 
 import * as Hammer from 'hammerjs';
 export class MyHammerConfig extends HammerGestureConfig {
@@ -54,7 +56,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
+    { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
+    SocialSharing
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import domtoimage from 'dom-to-image';
+import { jsPDF } from 'jspdf';
 import * as moment from 'moment';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { NotificationsService } from 'src/app/services/notifications.service';
 
 
 
@@ -15,28 +18,60 @@ export class SharePage implements OnInit {
   @Input() weekInfo: any;
   @Input() currentWeek: any;
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private socialSharing: SocialSharing,
+    private notificationsService: NotificationsService,
+
+    ) { }
 
   ngOnInit() {
-    console.log("Me llega a share:", this.weekInfo, this.currentWeek)
+    // console.log("Me llega a share:", this.weekInfo, this.currentWeek)
   }
 
   closeModal() {
     this.modalController.dismiss();
   }
 
+  // I can not make work with ionic and pwa (error cordova_not_enable)
   send() {
     const div = document.getElementById('screenshot');
     const options = { background: 'white', height: 850, width: 400 };
     domtoimage.toPng(div, options).then((dataUrl) => {
-        // //Initialize JSPDF
-        // const doc = new jsPDF('p', 'mm', 'a4');
-        // //Add image Url to PDF
-        // doc.addImage(dataUrl, 'PNG', 0, 0, 210, 340);
-        // doc.save('pdfDocument.pdf');
-        console.log(dataUrl)
-    })
+      console.log(dataUrl)
 
+      this.socialSharing.shareViaWhatsApp('Este es el texto', dataUrl).then((res) => {
+        // Success
+        this.notificationsService.showMessage("Enviado")
+      }).catch((e) => {
+        // Error!
+        this.notificationsService.showMessage(e)
+      });
+    })
+  }
+
+  saveImage() {
+    const div = document.getElementById('screenshot');
+    const options = { background: 'white', height: 850, width: 400 };
+    domtoimage.toPng(div, options).then((dataUrl) => {
+      // console.log(dataUrl)
+      var download = document.createElement('a');
+      download.href = dataUrl;
+      download.download = 'time.png';
+      download.click();
+    })
+  }
+
+  savePdf() {
+    const div = document.getElementById('screenshot');
+    const options = { background: 'white', height: 850, width: 400 };
+    domtoimage.toPng(div, options).then((dataUrl) => {
+      //Initialize JSPDF
+      const doc = new jsPDF('p', 'mm', 'a4');
+      // //Add image Url to PDF
+      doc.addImage(dataUrl, 'PNG', 0, 0, 210, 340);
+      doc.save('times.pdf');;
+    })
   }
 
   totalDayTime(time) {

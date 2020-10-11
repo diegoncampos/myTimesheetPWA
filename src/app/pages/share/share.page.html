@@ -13,7 +13,7 @@
 
 <ion-content>
 
-  <div id="screenshot">
+  <div id="screenshot" class="content">
 
     <div class="fromToDates">
       <div class="col">
@@ -51,6 +51,10 @@
 
   </div>
 
-  <ion-button expand="block" color="primary" (click)="send()">Send</ion-button>
+  <ion-button expand="block" color="primary" (click)="savePdf()">Save as PDF</ion-button>
+  <ion-button expand="block" color="primary" (click)="saveImage()">Save as Image</ion-button>
+  <ion-button expand="block" color="primary" (click)="send()">Send by Whatsapp</ion-button>
+
+
 
 </ion-content>
