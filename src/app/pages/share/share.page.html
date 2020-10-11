@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-buttons slot="start">
+        <ion-button (click)="closeModal()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-buttons>
+    <ion-title>Share</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div id="screenshot">
+
+    <div class="fromToDates">
+      <div class="col">
+        <strong id="from">From: {{weekInfo.from | date: 'dd/MM/yyyy'}}</strong>
+      </div>
+      <div class="col">
+        <strong id="to">To: {{weekInfo.to | date: 'dd/MM/yyyy'}}</strong>
+      </div>
+    </div>
+    <div class="totalHours">
+      <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
+    </div>
+    <div class="totalHours">
+      <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
+    </div>
+
+    <mat-list dense>
+      <mat-list-item *ngFor="let time of currentWeek">
+        <span matLine style="background-color: rgb(184, 179, 179);"> {{time.date | date: 'EE dd MMM yyyy'}} </span>
+        <p matLine *ngIf="!time.byProd">
+          <span> {{time.startTime | date: 'HH:mm'}} </span>
+          <span> - {{time.endTime | date: 'HH:mm'}} </span>
+        --> <b>Total: </b> <ion-label>{{totalDayTime(time) |  number : '1.2-2'}} Hs</ion-label>
+        </p>
+        <p matLine *ngIf="time.byProd">
+          <span><b>Quantity:</b></span>
+          <span>{{time.quantity |  number : '1.2-2'}}</span>
+        </p>
+        <!-- <div matLine> -->
+          <span matLine *ngIf="time.hadLunch" id="hadLunch">Had Lunch - {{time.lunchTime}} minutes.</span><br>
+          <span matLine *ngIf="time.comments" id="hadLunch">{{time.comments}}.</span>
+        <!-- </div> -->
+      </mat-list-item>
+    </mat-list>
+
+  </div>
+
+  <ion-button expand="block" color="primary" (click)="send()">Send</ion-button>
+
+</ion-content>

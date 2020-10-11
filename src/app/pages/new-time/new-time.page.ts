@@ -29,7 +29,6 @@ export class NewTimePage implements OnInit {
   constructor(private modalController: ModalController) {}
   
   ngOnInit() {
-    console.log("Me llega:", this.time)
     if (this.editMode) {
       this.newDate = this.time;
     }

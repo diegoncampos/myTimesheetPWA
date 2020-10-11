@@ -35,6 +35,10 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule), canActivate: [LoginGuard]
   },
+  {
+    path: 'share',
+    loadChildren: () => import('./pages/share/share.module').then( m => m.SharePageModule)
+  },
 ];
 
 @NgModule({

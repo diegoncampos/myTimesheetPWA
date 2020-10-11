@@ -1,0 +1,21 @@
+.fromToDates {
+    display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: center;
+  .col {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    border:1px solid #cccccc;
+    padding: 10px;
+  }
+}
+.totalHours {
+    width: 100%;
+    text-align: center;
+    border:1px solid  #cccccc;
+    padding: 10px;
+}

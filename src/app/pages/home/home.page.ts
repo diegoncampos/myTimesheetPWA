@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { NewTimePage } from '../new-time/new-time.page'
+import { SharePage } from '../share/share.page'
 import * as moment from 'moment';
 import { NotificationsService } from '../../services/notifications.service';
 import { UserService } from '../../services/user.service'
@@ -300,9 +301,23 @@ export class HomePage implements OnInit {
     this.getWeeklyHours();
   }
 
-  share() {
-    console.log("Share")
-    this.notificationsService.showMessage("Share is Not implemented yet.. Sorry!");
+  // share() {
+  //   console.log("Share")
+  //   this.notificationsService.showMessage("Share is Not implemented yet.. Sorry!");
+  // }
+
+  async share() {
+    const modal = await this.modalController.create({
+      component: SharePage,
+      componentProps: {weekInfo: this.weekInfo, currentWeek: this.currentWeek}
+    });
+    modal.onDidDismiss().then(data => {
+      let newDate = data.data;
+      if(newDate) {
+        console.log("Regreso")
+      }
+    })
+    return await modal.present();
   }
 
   totalDayTime(time) {
