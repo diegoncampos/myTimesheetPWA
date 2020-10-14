@@ -3,6 +3,15 @@ ion-content.background{
   }
 .linkedin {
     text-align: center;
+    // --background: url(../../../assets/linkedin.png) no-repeat;
+    background-image: url("../../../assets/linkedin.png");
+    height: 360px;
+    width: auto; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: auto;
+    margin: 40px;
+
 }
 #info {
     text-align: center;
