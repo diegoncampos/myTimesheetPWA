@@ -19,21 +19,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="background" scrollEvents="true">
+<ion-content [fullscreen]="true" class="background" scrollEvents="true" (swipeleft)="nextWeek()"  (swiperight)="previousWeek()">
 
-  <div class="fromToDates">
-    <div class="col">
-      <strong id="from">From: {{weekInfo.from | date: 'dd/MM/yyyy'}}</strong>
+  <div id="dateAnimation">
+    <div class="fromToDates">
+      <div class="col">
+        <strong id="from">From: {{weekInfo.from | date: 'dd/MM/yyyy'}}</strong>
+      </div>
+      <div class="col">
+        <strong id="to">To: {{weekInfo.to | date: 'dd/MM/yyyy'}}</strong>
+      </div>
     </div>
-    <div class="col">
-      <strong id="to">To: {{weekInfo.to | date: 'dd/MM/yyyy'}}</strong>
+    <div class="totalHours">
+      <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
     </div>
-  </div>
-  <div class="totalHours">
-    <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
-  </div>
-  <div class="totalHours">
-    <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
+    <div class="totalHours">
+      <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
+    </div>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab *ngIf="!searchMode">
@@ -53,15 +55,17 @@
 
     <ion-spinner name="dots" *ngIf="showSpinner" class="homeSpinner"></ion-spinner>
 
-    <ion-card (swipeleft)="nextWeek()"  (swiperight)="previousWeek()" *ngIf="!showSpinner">
+    <ion-card *ngIf="!showSpinner" id="cardAnimation">
       <!-- <ion-card-header>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-        <ion-card-title>Card Title</ion-card-title>
-      </ion-card-header> -->
-
-      <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">No Data Entry This Week</ion-label> <br>
-      <ion-label id="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">¯\_(ツ)_/¯</ion-label>
-
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card-title>Card Title</ion-card-title>
+          </ion-card-header> -->
+      <div class="noContent" *ngIf="currentWeek !== undefined && currentWeek.length == 0">
+        <ion-label>No Data Entry This Week
+        </ion-label> <br>
+        <ion-label>¯\_(ツ)_/¯</ion-label>
+      </div>
+    
       <ion-card-content>
         <ion-list lines="none">
           <div *ngFor="let time of currentWeek; let $index=index;" (click)="showDetailsF(time)" (press)="onPress(time)">

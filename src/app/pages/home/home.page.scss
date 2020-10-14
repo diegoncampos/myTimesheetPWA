@@ -38,6 +38,7 @@ ion-content.background{
   ion-card {
     flex-grow: 11;
     opacity: 0.7;
+    min-height: 70vh;
   }
   
   #listDate {
@@ -48,9 +49,10 @@ ion-content.background{
     text-align: center;
   }
 
-  #noContent {
+  .noContent {
     text-align: center;
     display: block;
+    padding-top: 80%;
   }
   #hadLunch {
     display: block;
@@ -63,4 +65,20 @@ ion-content.background{
   display: block;
   margin: auto;
   padding-top: 30%;
+  min-height: 70vh;
+}
+
+.swipeLeftAnimation {
+  animation: bounceInLeft;
+  animation-duration: 1s;
+}
+
+.swipeRightAnimation {
+  animation: bounceInRight;
+  animation-duration: 1s;
+}
+
+.dateAnimation {
+  animation: headShake;
+  animation-duration: 1s;
 }

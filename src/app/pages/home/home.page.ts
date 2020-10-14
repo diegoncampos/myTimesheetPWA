@@ -20,6 +20,7 @@ export class HomePage implements OnInit {
   public currentWeek: any = [];
   public userInfo: any = {displayName: 'User', uid:'', times: []};
   public showSpinner:boolean = true;
+  public animations:any[] = ['swipeRightAnimation', 'swipeLeftAnimation', 'dateAnimation'];
   // public showDetails:boolean = false;
 
   constructor(
@@ -111,7 +112,7 @@ export class HomePage implements OnInit {
         this.userInfo.times.push(newTime);
         let uid = JSON.parse(localStorage.getItem('user')).uid;
         this.userService.addTime(uid, this.userInfo.times);
-        this.weekInfoUpdate();
+        this.weekInfoUpdate(newTime.date);
       }
 
     })
@@ -133,7 +134,7 @@ export class HomePage implements OnInit {
             elem.showDetails = false;
             let uid = JSON.parse(localStorage.getItem('user')).uid;
             this.userService.addTime(uid, this.userInfo.times);
-            this.weekInfoUpdate();
+            this.weekInfoUpdate(newDate.date);
           }
         });
       }
@@ -157,7 +158,7 @@ export class HomePage implements OnInit {
                 object.splice(index, 1)
                 let uid = JSON.parse(localStorage.getItem('user')).uid;
                 this.userService.addTime(uid, this.userInfo.times);
-                this.weekInfoUpdate();
+                this.weekInfoUpdate(time.date);
               }
             });
           }
@@ -208,22 +209,16 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  // removeTime(time:any) {
-  //   console.log("Remove:", time)
-  //   this.userInfo.times.forEach((elem, index, object) => {
-  //     if(elem === time) {
-  //       console.log("encomntre", elem, "Index:", index)
-  //       object.splice(index, 1)
-  //       let uid = JSON.parse(localStorage.getItem('user')).uid;
-  //       this.userService.addTime(uid, this.userInfo.times);
-  //       this.weekInfoUpdate();
-  //     }
-  //   });
-  // }
-
-  weekInfoUpdate() {
-    this.weekInfo.from = moment().startOf('isoWeek');
-    this.weekInfo.to = moment().endOf('isoWeek');
+  weekInfoUpdate(date?:any) {
+    
+    if (date) {
+      this.weekInfo.from = moment(date).startOf('isoWeek');
+      this.weekInfo.to = moment(date).endOf('isoWeek');
+    }
+    else {
+      this.weekInfo.from = moment().startOf('isoWeek');
+      this.weekInfo.to = moment().endOf('isoWeek');
+    }
 
     this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
   }
@@ -264,6 +259,42 @@ export class HomePage implements OnInit {
   }
 
   nextWeek() {
+
+    // Restart animation every swipe
+    let element =  document.getElementById("cardAnimation");
+    // element.classList.remove("swipeRightAnimation");
+    // element.classList.remove("swipeLeftAnimation");
+
+    // element.animate()
+
+    // void element.offsetHeight;
+    // void element.offsetWidth;
+
+    // element.classList.add('swipeRightAnimation');
+    // this.restartAnimation("cardAnimation", this.animations[0]);
+    // this.restartAnimation("dateAnimation", this.animations[2]);
+
+    // Testing 2nd Option
+    element.animate([
+      // keyframes
+      { transform: 'translateX(300px)' }, 
+      { transform: 'translateX(-30px)' },
+      { transform: 'translateX(10px)' },
+      { transform: 'translateX(0px)' }
+
+    ], { 
+      // timing options
+      duration: 400
+    });
+
+    document.getElementById("dateAnimation").animate([
+      { transform: 'scale(0)' }, 
+      { transform: 'scale(1)' }
+    ], {
+      duration: 100
+    });
+
+
     if (!this.searchMode) {
       // console.log("Next week")
       this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").add(7, 'days');
@@ -274,6 +305,40 @@ export class HomePage implements OnInit {
   }
 
   previousWeek() {
+
+    // Restart animation every swipe
+    let element =  document.getElementById("cardAnimation");
+    // element.classList.remove("swipeLeftAnimation");
+    // element.classList.remove("swipeRightAnimation");
+
+    // void element.offsetHeight;
+    // void element.offsetWidth;
+
+    // element.classList.add("swipeLeftAnimation");
+
+    // this.restartAnimation("cardAnimation", this.animations[1]);
+    // this.restartAnimation("dateAnimation", this.animations[2]);
+
+    // Testing 2nd Option
+    element.animate([
+      // keyframes
+      { transform: 'translateX(-300px)' }, 
+      { transform: 'translateX(30px)' },
+      { transform: 'translateX(-10px)' },
+      { transform: 'translateX(0px)' }
+    ], { 
+      // timing options
+      duration: 400
+    });
+
+    document.getElementById("dateAnimation").animate([
+      { transform: 'scale(0)' }, 
+      { transform: 'scale(1)' }
+    ], {
+      duration: 100
+    });
+
+
     if (!this.searchMode) {
       // console.log("Previous week")
       this.weekInfo.from = moment(this.weekInfo.from, "DD-MM-YYYY").subtract(7, 'days');
@@ -281,6 +346,21 @@ export class HomePage implements OnInit {
 
       this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
     }
+  }
+
+  restartAnimation(elemntId, animation) {
+    // Restart animation every time
+    let element =  document.getElementById(elemntId);
+    // element.classList.remove("swipeLeftAnimation");
+    // element.classList.remove("swipeRightAnimation");
+    this.animations.forEach(elem => {
+      element.classList.remove(elem);
+    })
+
+    void element.offsetHeight;
+    void element.offsetWidth;
+
+    element.classList.add(animation);
   }
 
   findSelectedDays(from: any, to: any) {
