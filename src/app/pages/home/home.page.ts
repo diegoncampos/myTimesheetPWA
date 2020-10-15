@@ -389,7 +389,7 @@ export class HomePage implements OnInit {
   async share() {
     const modal = await this.modalController.create({
       component: SharePage,
-      componentProps: {weekInfo: this.weekInfo, currentWeek: this.currentWeek}
+      componentProps: {weekInfo: this.weekInfo, currentWeek: this.currentWeek, userInfo: this.userInfo}
     });
     modal.onDidDismiss().then(data => {
       let newDate = data.data;
