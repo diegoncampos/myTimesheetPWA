@@ -33,6 +33,7 @@ export class RegistrationPage implements OnInit {
     if (this.login.password === this.login.confPassword) {
       this.authService.RegisterUser(this.login.email, this.login.password)
       .then((res) => {
+        localStorage.setItem('user', JSON.stringify(res));
         //Create user
         let user:User = {
           email: res.user.email,
@@ -41,7 +42,13 @@ export class RegistrationPage implements OnInit {
           groupId: 1,
           times: []
         }
-        this.userService.newUser(res.user.uid, user);
+        this.userService.newUser(res.user.uid, user).then( () => {
+          this.notificationsService.showMessage("User created succesfully!")
+        })
+        .catch((e) => {
+          // Error!
+          this.notificationsService.showMessage(e)
+        });;
 
         this.router.navigate(['home']);
       }).catch((error) => {

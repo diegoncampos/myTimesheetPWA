@@ -7,6 +7,7 @@ import { NotificationsService } from '../../services/notifications.service';
 import { UserService } from '../../services/user.service'
 import { Times } from 'src/app/models/times';
 import { Settings } from 'src/app/models/settings';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 
@@ -30,7 +31,9 @@ export class HomePage implements OnInit {
     public modalController: ModalController,
     public alertController: AlertController,
     private notificationsService: NotificationsService,
-    private userService: UserService
+    private userService: UserService,
+    public ngFireAuth: AngularFireAuth,
+
     ) {
     this.weekInfoUpdate();
 
@@ -48,8 +51,20 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     this.userInfo.uid = JSON.parse(localStorage.getItem('user')).uid;
-    this.userService.getUser(this.userInfo.uid).subscribe(res => {
-      // console.log("Traigo User:", res.data())
+    if (typeof this.userInfo.uid !== 'undefined' && this.userInfo.uid) {
+      this.getUserInfo(this.userInfo.uid);
+    }
+    else {
+      this.ngFireAuth.authState.subscribe(res => {
+        if (res && res.uid) {
+          this.getUserInfo(res.uid);
+        }
+      })
+    }
+  }
+
+  getUserInfo(uid) {
+    this.userService.getUser(uid).subscribe(res => {
       this.userInfo = {
         displayName: res.data().displayName,
         email: res.data().email,
@@ -58,7 +73,7 @@ export class HomePage implements OnInit {
         times: res.data().times
       }
 
-      if(typeof res.data().settings !== 'undefined' && JSON.stringify(res.data().settings) !== 'undefined'){
+      if (typeof res.data().settings !== 'undefined' && JSON.stringify(res.data().settings) !== 'undefined') {
         this.settings = res.data().settings;
         localStorage.setItem('userSettings', JSON.stringify(res.data().settings));
       }

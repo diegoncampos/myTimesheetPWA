@@ -19,13 +19,7 @@ export class UserService {
 
   newUser(userId: string, user: User) {
     // var userId = firebase.auth().currentUser.uid;
-    return this.afs.collection('users').doc(userId).set(user)
-      .then(function () {
-        console.log("Document successfully written!");
-      })
-      .catch(function (error) {
-        console.error("Error writing document: ", error);
-      });
+    return this.afs.collection('users').doc(userId).set(user);
 
   }
 
