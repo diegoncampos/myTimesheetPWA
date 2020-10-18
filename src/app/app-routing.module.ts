@@ -37,7 +37,11 @@ const routes: Routes = [
   },
   {
     path: 'share',
-    loadChildren: () => import('./pages/share/share.module').then( m => m.SharePageModule)
+    loadChildren: () => import('./pages/share/share.module').then( m => m.SharePageModule), canActivate: [AuthGuard]
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule), canActivate: [AuthGuard]
   },
 ];
 

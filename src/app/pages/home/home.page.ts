@@ -6,6 +6,8 @@ import * as moment from 'moment';
 import { NotificationsService } from '../../services/notifications.service';
 import { UserService } from '../../services/user.service'
 import { Times } from 'src/app/models/times';
+import { Settings } from 'src/app/models/settings';
+
 
 
 @Component({
@@ -21,6 +23,7 @@ export class HomePage implements OnInit {
   public userInfo: any = {displayName: 'User', uid:'', times: []};
   public showSpinner:boolean = true;
   public animations:any[] = ['swipeRightAnimation', 'swipeLeftAnimation', 'dateAnimation'];
+  public settings:Settings = {hourlyRate: 0, prodRate: 0, showRates: false};
   // public showDetails:boolean = false;
 
   constructor(
@@ -37,6 +40,10 @@ export class HomePage implements OnInit {
   
 
   ngOnInit() {
+    let set = localStorage.getItem('userSettings');
+    if (typeof set !== 'undefined' && set) {
+      this.settings = JSON.parse(set);
+    }
   }
 
   ionViewWillEnter() {
@@ -50,6 +57,12 @@ export class HomePage implements OnInit {
         photoURL: "",
         times: res.data().times
       }
+
+      if(typeof res.data().settings !== 'undefined' && JSON.stringify(res.data().settings) !== 'undefined'){
+        this.settings = res.data().settings;
+        localStorage.setItem('userSettings', JSON.stringify(res.data().settings));
+      }
+
       this.weekInfoUpdate();
       this.showSpinner = false;
     })
@@ -381,11 +394,6 @@ export class HomePage implements OnInit {
     this.getWeeklyHours();
   }
 
-  // share() {
-  //   console.log("Share")
-  //   this.notificationsService.showMessage("Share is Not implemented yet.. Sorry!");
-  // }
-
   async share() {
     const modal = await this.modalController.create({
       component: SharePage,
@@ -402,7 +410,6 @@ export class HomePage implements OnInit {
 
   totalDayTime(time) {
     var duration = moment.duration(moment(time.endTime).diff(moment(time.startTime)));
-    // console.log("TIME", time)
     if (time.hadLunch) {
       duration.subtract(time.lunchTime, 'minutes');
     }
@@ -459,20 +466,22 @@ export class HomePage implements OnInit {
     this.weekInfoUpdate();
   }
 
-  showDescription(item) {
-    // this.purchases.forEach(elem =>{
-    //   if(item !== elem){
-    //     elem.showDescription = false;
-    //   }
-    // })
-    item.showDescription = !item.showDescription;
-  }
-
   showDetailsF(time) {
     this.currentWeek.forEach(elem => {
       elem.showDetails = false;
     });
     time.showDetails = !time.showDetails;
+  }
+
+  showTotalsRate(elem) {
+    if (elem === 'hourlyRate' && this.settings.showRates) {
+      let total = this.settings.hourlyRate * this.weekInfo.totalHours;
+      return `<strong> - $${total.toFixed(2)}</strong>`
+    }
+    if (elem === 'prodRate' && this.settings.showRates) {
+      let total = this.settings.prodRate * this.weekInfo.totalProd;
+      return `<strong> - $${total.toFixed(2)}</strong>`
+    }
   }
 
 }

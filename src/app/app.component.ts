@@ -26,6 +26,12 @@ export class AppComponent implements OnInit {
       action: 'selectedIndex = i'
     },
     {
+      title: 'Settings',
+      url: '/settings',
+      icon: 'settings',
+      action: 'selectedIndex = i'
+    },
+    {
       title: 'About',
       url: '/about',
       icon: 'information-circle',

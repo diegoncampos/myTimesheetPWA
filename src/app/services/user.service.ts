@@ -34,9 +34,21 @@ export class UserService {
     return this.afs.collection('users').doc(userID).get();
   }
 
-  addTime(userId: string, times:Times) {
-    return this.afs.collection('users').doc(userId).update({
+  addTime(userID: string, times:Times) {
+    return this.afs.collection('users').doc(userID).update({
       times: times
+    })
+  }
+
+  getSettings(userID: string) {
+    this.afs.collection('users').doc(userID).get().subscribe(elem => {
+      return elem.data().settings;
+    });
+  }
+
+  setSettings(userID: string, settings: any) {
+    return this.afs.collection('users').doc(userID).update({
+      settings: settings
     })
   }
 }

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref='/home'></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="background">
+
+  <div class="rates">
+    <ion-item>
+      <ion-label>Show earned money</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="settings.showRates" (ionChange)="updateShowRate()"></ion-toggle>
+    </ion-item>
+    <div *ngIf="settings.showRates">
+      <ion-item>
+        <ion-label position="floating">Hourly rate</ion-label>
+        <ion-input [(ngModel)]="settings.hourlyRate"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Production pay</ion-label>
+        <ion-input [(ngModel)]="settings.prodRate"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="saveRates()">Save</ion-button>
+    </div>
+  </div>
+
+</ion-content>
