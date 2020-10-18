@@ -16,6 +16,8 @@ export class RegistrationPage implements OnInit {
 
   public confPass: boolean = false;
   public login = {name: '', email:'', password: '', confPassword: ''}
+  public showIconPass: string = "eye";
+  public showIconCPass: string = "eye";
 
   constructor(
     public authService: AuthenticationService,
@@ -53,6 +55,16 @@ export class RegistrationPage implements OnInit {
       this.confPass = true;
     }
     
+  }
+
+  showPassword(input: any): any {
+    input.type = input.type === 'password' ? 'text' : 'password';
+    if (input.name == 'password') {
+      this.showIconPass = this.showIconPass === "eye" ? "eye-off" : "eye";
+    }
+    else if (input.name == 'confPassword') {
+      this.showIconCPass = this.showIconCPass === "eye" ? "eye-off" : "eye";
+    }
   }
 
 }

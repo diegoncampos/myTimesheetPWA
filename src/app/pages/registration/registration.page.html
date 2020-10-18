@@ -21,7 +21,8 @@
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" [(ngModel)]="login.password" name="password"></ion-input>
+      <ion-input #inputPass type="password" [(ngModel)]="login.password" name="password"></ion-input>
+      <ion-icon [name]="showIconPass" color="primary" slot="end" (click)="showPassword(inputPass)"></ion-icon>
     </ion-item>
 
     <ion-item lines="full">
@@ -29,7 +30,8 @@
         Confirm Password
         <span *ngIf="confPass" class="required">&#42;</span>
       </ion-label>
-      <ion-input type="password" [(ngModel)]="login.confPassword" name="confPassword"></ion-input>
+      <ion-input #inputCPass type="password" [(ngModel)]="login.confPassword" name="confPassword"></ion-input>
+      <ion-icon [name]="showIconCPass" color="primary" slot="end" (click)="showPassword(inputCPass)"></ion-icon>
     </ion-item>
 
     <ion-row>
