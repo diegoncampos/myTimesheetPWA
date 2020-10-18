@@ -93,7 +93,7 @@ export class SharePage implements OnInit {
     this.currentWeek.forEach(element => {
 
       text += "\n__________________";
-      text += "\n*Date: " + moment(element.date).format('dddd DD MMM YYYY') + "*";
+      text += "\n*Date: " + moment(element.date).format('ddd DD MMM YYYY') + "*";
       if(element.byProd) {
         text += "\n*Quantity:* " + element.quantity
       }

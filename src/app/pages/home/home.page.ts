@@ -211,6 +211,13 @@ export class HomePage implements OnInit {
           }
         },
         {
+          text: 'Share',
+          role: 'share',
+          handler: () => {
+            this.shareDay(time);
+          }
+        },
+        {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
@@ -273,21 +280,7 @@ export class HomePage implements OnInit {
 
   nextWeek() {
 
-    // Restart animation every swipe
     let element =  document.getElementById("cardAnimation");
-    // element.classList.remove("swipeRightAnimation");
-    // element.classList.remove("swipeLeftAnimation");
-
-    // element.animate()
-
-    // void element.offsetHeight;
-    // void element.offsetWidth;
-
-    // element.classList.add('swipeRightAnimation');
-    // this.restartAnimation("cardAnimation", this.animations[0]);
-    // this.restartAnimation("dateAnimation", this.animations[2]);
-
-    // Testing 2nd Option
     element.animate([
       // keyframes
       { transform: 'translateX(300px)' }, 
@@ -319,20 +312,7 @@ export class HomePage implements OnInit {
 
   previousWeek() {
 
-    // Restart animation every swipe
     let element =  document.getElementById("cardAnimation");
-    // element.classList.remove("swipeLeftAnimation");
-    // element.classList.remove("swipeRightAnimation");
-
-    // void element.offsetHeight;
-    // void element.offsetWidth;
-
-    // element.classList.add("swipeLeftAnimation");
-
-    // this.restartAnimation("cardAnimation", this.animations[1]);
-    // this.restartAnimation("dateAnimation", this.animations[2]);
-
-    // Testing 2nd Option
     element.animate([
       // keyframes
       { transform: 'translateX(-300px)' }, 
@@ -359,21 +339,6 @@ export class HomePage implements OnInit {
 
       this.findSelectedDays(this.weekInfo.from, this.weekInfo.to);
     }
-  }
-
-  restartAnimation(elemntId, animation) {
-    // Restart animation every time
-    let element =  document.getElementById(elemntId);
-    // element.classList.remove("swipeLeftAnimation");
-    // element.classList.remove("swipeRightAnimation");
-    this.animations.forEach(elem => {
-      element.classList.remove(elem);
-    })
-
-    void element.offsetHeight;
-    void element.offsetWidth;
-
-    element.classList.add(animation);
   }
 
   findSelectedDays(from: any, to: any) {
@@ -481,6 +446,31 @@ export class HomePage implements OnInit {
     if (elem === 'prodRate' && this.settings.showRates) {
       let total = this.settings.prodRate * this.weekInfo.totalProd;
       return `<strong> - $${total.toFixed(2)}</strong>`
+    }
+  }
+
+  shareDay(time) {
+    let text: string = "*" + this.userInfo.displayName + "*";
+    text += "\n*Date: " + moment(time.date).format('ddd DD MMM YYYY') + "*";
+
+    if (time.byProd) {
+      text += "\n*Quantity:* " + time.quantity;
+    }
+    else {
+      text += "\n*From:* " + moment(time.startTime).format('HH:mm') + " *- To:* " + moment(time.endTime).format('HH:mm') + " *- Total:* " + this.totalDayTime(time).toFixed(2) + "hs";
+    }
+    text += time.comments ? "\n*Comment:* _" + time.comments + "_" : "";
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Weekly Summary',
+        text: text,
+        // url: "https://mytimesheetpwa.web.app/"
+      }).then()
+        .catch((e) => {
+          // Error!
+          this.notificationsService.showMessage(e)
+        });
     }
   }
 
