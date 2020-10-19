@@ -86,12 +86,15 @@ export class SharePage implements OnInit {
   }
 
   webshare() {
-    let text: string = "*" + this.userInfo.displayName + " - Weekly Summary:*\n" 
-                        + "\n*Total Hours:* " + this.weekInfo.totalHours.toFixed(2) + "hs"
-                        + "\n*Total Prod:* " + this.weekInfo.totalProd+ "\n";
+    let text: string = "*" + this.userInfo.displayName + " - Weekly Summary:*\n";
+    if(this.weekInfo.totalHours > 0) {
+      text += "\n*Total Hours:* " + this.weekInfo.totalHours.toFixed(2) + "hs";
+    }
+    if(this.weekInfo.totalProd > 0) {
+      text += "\n*Total Prod:* " + this.weekInfo.totalProd + "\n";
+    }
 
     this.currentWeek.forEach(element => {
-
       text += "\n__________________";
       text += "\n*Date: " + moment(element.date).format('ddd DD MMM YYYY') + "*";
       if(element.byProd) {
