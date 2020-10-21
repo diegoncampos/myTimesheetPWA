@@ -82,7 +82,7 @@ export class HomePage implements OnInit {
         this.weekInfoUpdate();
         this.showSpinner = false;
       },
-      err => this.notificationsService.showMessage("Failed to get user info because the client is offline.", 5000)
+      err => this.notificationsService.showMessage("The client is offline, please connect to the internet.", 5000)
     )
   }
 
@@ -408,7 +408,9 @@ export class HomePage implements OnInit {
         // input date with min & max
         {
           name: 'fromDate',
-          type: 'date'
+          type: 'date',
+          // value: moment().format("yyyy-mm-dd"),
+          // placeholder: "Select from date"
           // min: '2017-03-01',
           // max: '2018-01-12'
         },
@@ -481,9 +483,9 @@ export class HomePage implements OnInit {
 
     if (navigator.share) {
       navigator.share({
-        title: 'Weekly Summary',
+        title: 'Dairy Summary',
         text: text,
-        // url: "https://mytimesheetpwa.web.app/"
+        url: "https://mytimesheetpwa.web.app/"
       }).then()
         .catch((e) => {
           // Error!
