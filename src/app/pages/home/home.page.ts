@@ -64,23 +64,26 @@ export class HomePage implements OnInit {
   }
 
   getUserInfo(uid) {
-    this.userService.getUser(uid).subscribe(res => {
-      this.userInfo = {
-        displayName: res.data().displayName,
-        email: res.data().email,
-        groupId: 1,
-        photoURL: "",
-        times: res.data().times
-      }
+    this.userService.getUser(uid).subscribe(
+      (res) => {
+        this.userInfo = {
+          displayName: res.data().displayName,
+          email: res.data().email,
+          groupId: 1,
+          photoURL: "",
+          times: res.data().times
+        }
 
-      if (typeof res.data().settings !== 'undefined' && JSON.stringify(res.data().settings) !== 'undefined') {
-        this.settings = res.data().settings;
-        localStorage.setItem('userSettings', JSON.stringify(res.data().settings));
-      }
+        if (typeof res.data().settings !== 'undefined' && JSON.stringify(res.data().settings) !== 'undefined') {
+          this.settings = res.data().settings;
+          localStorage.setItem('userSettings', JSON.stringify(res.data().settings));
+        }
 
-      this.weekInfoUpdate();
-      this.showSpinner = false;
-    })
+        this.weekInfoUpdate();
+        this.showSpinner = false;
+      },
+      err => this.notificationsService.showMessage("Failed to get user info because the client is offline.", 5000)
+    )
   }
 
   // public data = {

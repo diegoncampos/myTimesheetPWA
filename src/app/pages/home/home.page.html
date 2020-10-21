@@ -38,20 +38,20 @@
     </div>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab *ngIf="!searchMode">
-    <ion-fab-button>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" #fab>
+    <ion-fab-button [disabled]="searchMode || showSpinner">
       <ion-icon name="add" (click)="addTime()"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <ion-fab vertical="bottom" horizontal="start" slot="fixed" #fab>
-    <ion-fab-button color="secondary">
+    <ion-fab-button color="secondary" [disabled]="showSpinner">
       <ion-icon name="share-social-outline" (click)="share()"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <div class="content">
-    <ion-icon name="chevron-back-outline" (click)="previousWeek()" *ngIf="!searchMode"></ion-icon>
+    <ion-icon name="chevron-back-outline" (click)="previousWeek()" *ngIf="!searchMode && !showSpinner"></ion-icon>
 
     <ion-spinner name="dots" *ngIf="showSpinner" class="homeSpinner"></ion-spinner>
 
@@ -99,7 +99,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-icon name="chevron-forward-outline" (click)="nextWeek()" *ngIf="!searchMode"></ion-icon>
+    <ion-icon name="chevron-forward-outline" (click)="nextWeek()" *ngIf="!searchMode && !showSpinner"></ion-icon>
 
   </div>
 
