@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { NewTimePage } from '../new-time/new-time.page'
 import { SharePage } from '../share/share.page'
+import { SearchPage } from '../search/search.page'
 import * as moment from 'moment';
 import { NotificationsService } from '../../services/notifications.service';
 import { UserService } from '../../services/user.service'
@@ -444,6 +445,21 @@ export class HomePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async search() {
+    const modal = await this.modalController.create({
+      component: SearchPage,
+      componentProps: {weekInfo: this.weekInfo, currentWeek: this.currentWeek, userInfo: this.userInfo}
+    });
+    modal.onDidDismiss().then(data => {
+      let dates = data.data;
+      if(dates) {
+        console.log("Regreso", dates)
+      }
+    })
+    return await modal.present();
+
   }
 
   finishSearch() {
