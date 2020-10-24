@@ -34,8 +34,6 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -53,18 +51,13 @@ import { MatNativeDateModule } from '@angular/material/core';
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserAnimationsModule,
-    MatDatepickerModule,
-    MatNativeDateModule
-
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
-    SocialSharing,
-    MatDatepickerModule,
-    MatNativeDateModule
+    SocialSharing
   ],
   bootstrap: [AppComponent]
 })

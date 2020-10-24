@@ -400,53 +400,6 @@ export class HomePage implements OnInit {
     return duration.asHours();
   }
 
-  async presentAlertSearch() {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Find Range of dates',
-      subHeader: 'Select from - to dates',
-      inputs: [
-        // input date with min & max
-        {
-          name: 'fromDate',
-          type: 'date',
-          // value: moment().format("yyyy-mm-dd"),
-          // placeholder: "Select from date"
-          // min: '2017-03-01',
-          // max: '2018-01-12'
-        },
-        {
-          name: 'toDate',
-          type: 'date'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Search',
-          handler: data => {
-            console.log('Confirm Ok', data);
-            if(data.fromDate && data.toDate) {
-              this.weekInfo.from = moment(data.fromDate, "YYYY-MM-DD");
-              this.weekInfo.to = moment(data.toDate, "YYYY-MM-DD");
-              // Added one day in 'to date' in order to include that date
-              this.findSelectedDays(moment(data.fromDate, "YYYY-MM-DD"), moment(data.toDate, "YYYY-MM-DD").add(1, 'days'));
-              this.searchMode = true;
-            }
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
   async search() {
     const modal = await this.modalController.create({
       component: SearchPage,
@@ -454,8 +407,12 @@ export class HomePage implements OnInit {
     });
     modal.onDidDismiss().then(data => {
       let dates = data.data;
-      if(dates) {
-        console.log("Regreso", dates)
+      if(dates && dates.fromDate && dates.toDate) {
+        this.weekInfo.from = moment(dates.fromDate, "YYYY-MM-DD");
+        this.weekInfo.to = moment(dates.toDate, "YYYY-MM-DD");
+        // Added one day in 'to date' in order to include that date
+        this.findSelectedDays(moment(dates.fromDate, "YYYY-MM-DD"), moment(dates.toDate, "YYYY-MM-DD").add(1, 'days'));
+        this.searchMode = true;
       }
     })
     return await modal.present();

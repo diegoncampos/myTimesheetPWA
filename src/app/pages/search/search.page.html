@@ -11,17 +11,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="background">
 
-  <mat-date-range-input [rangePicker]="picker">
-    <input matStartDate placeholder="Start date">
-    <input matEndDate placeholder="End date">
-  </mat-date-range-input>
-  
-  <mat-date-range-picker #picker></mat-date-range-picker>
+  <div class="selectDates">
+    <ion-item lines="none">
+      <ion-label>
+        Select dates to search by range
+      </ion-label>
+    </ion-item>
 
+    <ion-item>
+      <ion-label position="floating">From</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="searchDates.fromDate"></ion-datetime>
+    </ion-item>
 
-  <ion-button expand="block" color="primary" (click)="search()">Save as PDF</ion-button>
+    <ion-item>
+      <ion-label position="floating">To</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="searchDates.toDate"></ion-datetime>
+    </ion-item>
 
+    <ion-button expand="block" color="primary" (click)="search()">Search</ion-button>
+  </div>
 
 </ion-content>
