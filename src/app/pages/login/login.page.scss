@@ -1,13 +1,32 @@
+.login {
+    --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
+    --ion-background-color: transparent !important;
+}
 .icon {
     display: block;
-    width: 50%;
+    width: 35%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 55px;
+    margin-top: 40px;
+    border-radius: 30% !important;
+    overflow: hidden;
 }
 .credentials {
-    padding-top: 65px;
+    // padding-top: 65px;
+    margin: 20px;
 }
 .buttons {
     padding-top: 10px;
+    margin: 20px;
+}
+.appDescription {
+    text-align: center;
+    margin: 0 20px;
+    ion-card {
+        padding: 20px;
+        margin: 15px 0 0 0;
+    }
+    ion-label {
+        color: #292525;
+    }
 }
