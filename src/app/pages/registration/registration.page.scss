@@ -1,3 +1,11 @@
 .required {
     color: red;
 }
+.registration {
+    --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
+    --ion-background-color: transparent !important;
+
+    form {
+        margin: 20px;
+    }
+}
