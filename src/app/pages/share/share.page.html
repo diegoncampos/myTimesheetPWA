@@ -15,6 +15,7 @@
 
   <div id="screenshot" class="content">
 
+    <strong id="userName">{{userInfo.displayName}}'s Summary</strong>
     <div class="fromToDates">
       <div class="col">
         <strong id="from">From: {{weekInfo.from | date: 'dd/MM/yyyy'}}</strong>
@@ -23,10 +24,10 @@
         <strong id="to">To: {{weekInfo.to | date: 'dd/MM/yyyy'}}</strong>
       </div>
     </div>
-    <div class="totalHours">
+    <div class="totalHours" *ngIf="weekInfo.totalHours !== 0">
       <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong>
     </div>
-    <div class="totalHours">
+    <div class="totalHours" *ngIf="weekInfo.totalProd !== 0">
       <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong>
     </div>
 

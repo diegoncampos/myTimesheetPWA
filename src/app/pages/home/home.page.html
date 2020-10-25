@@ -33,7 +33,7 @@
     <div class="totalHours" *ngIf="weekInfo.totalHours !== 0">
       <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong> <span [innerHTML]="showTotalsRate('hourlyRate')"></span>
     </div>
-    <div class="totalHours"*ngIf="weekInfo.totalProd !== 0">
+    <div class="totalHours" *ngIf="weekInfo.totalProd !== 0">
       <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong> <span [innerHTML]="showTotalsRate('prodRate')"></span>
     </div>
   </div>

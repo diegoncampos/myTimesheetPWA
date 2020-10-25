@@ -24,6 +24,8 @@
       <ion-input #inputPass type="password" [(ngModel)]="login.password" name="password"></ion-input>
       <ion-icon [name]="showIconPass" color="dark" slot="end" (click)="showPassword(inputPass)"></ion-icon>
     </ion-item>
+    <ion-label class="passConditions">Password must be at least 6 characters</ion-label>
+
 
     <ion-item lines="full">
       <ion-label position="floating">
