@@ -32,3 +32,41 @@
     // text-align: center;
     font-weight: bold;
 }
+
+.timepicker {
+
+    .timepicker__header {
+      background-color: var(--ion-color-primary-shade) !important;
+    }
+  
+    .clock-face__clock-hand {
+      background-color: var(--ion-color-primary-shade) !important;
+  
+      &::after {
+        background-color: black !important;
+      }
+  
+      &::before {
+        border-color: var(--ion-color-primary) !important;
+      }
+    }
+  
+    .clock-face__number {
+      > span.active {
+        background-color: var(--ion-color-primary-shade) !important;
+      }
+    }
+  
+    button:not(.timepicker-dial__item) {
+      color: var(--ion-color-primary-shade) !important;
+    }
+    .ngx-timepicker__control--first {
+        background: transparent !important;
+    }
+  }
+
+  .ngx-timepicker-control {
+    .ngx-timepicker-control__input {
+        background: transparent !important;
+    }
+  }

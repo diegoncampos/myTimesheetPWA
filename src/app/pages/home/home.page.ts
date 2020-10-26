@@ -161,12 +161,22 @@ export class HomePage implements OnInit {
       if(newDate) {
         this.userInfo.times.forEach((elem, index, object) => {
           if (elem === time) {
-            elem = newDate;
-            // Close details after update
-            elem.showDetails = false;
+            this.userInfo.times[index] = {
+                date: newDate.date,
+                startTime: newDate.startTime,
+                endTime: newDate.endTime,
+                byProd: newDate.byProd,
+                quantity: newDate.quantity,
+                hadLunch: newDate.byProd ? false : newDate.hadLunch,
+                lunchTime: newDate.byProd ? null : newDate.lunchTime,
+                comments: newDate.comments
+              };
             let uid = JSON.parse(localStorage.getItem('user')).uid;
-            this.userService.addTime(uid, this.userInfo.times);
-            this.weekInfoUpdate(newDate.date);
+            this.userService.addTime(uid, this.userInfo.times)
+            .then(() => {
+              this.weekInfoUpdate(newDate.date);
+            })
+            .catch((e) => {this.notificationsService.showMessage(e)});
           }
         });
       }

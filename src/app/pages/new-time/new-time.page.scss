@@ -1,8 +1,14 @@
 ion-content.background{
     --background: url(../../../assets/background.jpg) 0 0/100% 100% no-repeat;
     --ion-background-color: transparent !important;
+
+    .datePicker {
+        width: 100%;
+    }
 }
 
 .byProdLabel {
     padding-left: 10px;
 }
+
+// #ion-overlay-1 > div.modal-wrapper.ion-overlay-wrapper.sc-ion-modal-ios > app-new-time > ion-content > ion-item:nth-child(1) > mat-form-field

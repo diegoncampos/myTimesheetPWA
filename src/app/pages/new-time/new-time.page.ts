@@ -30,7 +30,16 @@ export class NewTimePage implements OnInit {
   
   ngOnInit() {
     if (this.editMode) {
-      this.newDate = this.time;
+      this.newDate = {
+        date: this.time.date,
+        startTime: this.time.startTime !== "" && this.time.startTime != null ? moment(this.time.startTime).format('HH:mm') : '',
+        endTime: this.time.endTime !== "" && this.time.endTime != null ? moment(this.time.endTime).format('HH:mm') : '',
+        byProd: this.time.byProd,
+        quantity: this.time.quantity,
+        hadLunch: this.time.hadLunch,
+        lunchTime: this.time.lunchTime,
+        comments: this.time.comments
+      };
     }
   }
 
@@ -39,11 +48,14 @@ export class NewTimePage implements OnInit {
   }
 
   saveTime() {
-    this.modalController.dismiss(this.newDate);
+    let toSend = JSON.parse(JSON.stringify(this.newDate));
+    toSend.startTime = moment(toSend.startTime, "HH:mm").toISOString();
+    toSend.endTime = moment(toSend.endTime, "HH:mm").toISOString();
+    this.modalController.dismiss(toSend);
+    console.log("sale",toSend)
   }
 
   byProdFocus() {
     this.guestElement.setFocus();
   }
-
 }

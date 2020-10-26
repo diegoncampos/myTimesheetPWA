@@ -19,18 +19,51 @@
     <ion-datetime displayFormat="DD MM YY" placeholder="Select Date"></ion-datetime>
   </ion-item> -->
 
-  <ion-item>
+  <!-- <ion-item>
     <ion-label position="floating">Date:</ion-label>
     <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newDate.date"></ion-datetime>
+  </ion-item> -->
+
+  <ion-item lines="none">
+    <mat-form-field class="datePicker" appearance="standard">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="newDate.date" readonly>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #picker></mat-datepicker>
+    </mat-form-field>
+  
   </ion-item>
-  <ion-item>
+  
+
+
+  <!-- <ion-item>
     <ion-label>Start Time:</ion-label>
     <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.startTime"></ion-datetime>
-  </ion-item>
+  </ion-item> -->
+
   <ion-item>
+    <div class="editable-dial-example">
+      <ion-label>Start Time:</ion-label>
+      <ngx-timepicker-field [format]="24" [(ngModel)]="newDate.startTime"></ngx-timepicker-field>
+      <ngx-material-timepicker #editableDial [enableKeyboardInput]="true" [appendToInput]="true"></ngx-material-timepicker>
+    </div>
+  </ion-item>
+
+
+  <!-- <ion-item>
     <ion-label>End Time:</ion-label>
     <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.endTime"></ion-datetime>
+  </ion-item> -->
+
+  <ion-item>
+    <div class="editable-dial-example">
+      <ion-label>End Time:</ion-label>
+      <ngx-timepicker-field [format]="24" [(ngModel)]="newDate.endTime"></ngx-timepicker-field>
+      <ngx-material-timepicker #editableDial [enableKeyboardInput]="true" [appendToInput]="true"></ngx-material-timepicker>
+    </div>
   </ion-item>
+
+
   <ion-item>
     <ion-checkbox color="primary" [(ngModel)]="newDate.byProd" (ionChange)="byProdFocus()"></ion-checkbox>
     <ion-label class="byProdLabel">By production</ion-label>  

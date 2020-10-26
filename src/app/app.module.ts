@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 
 import { NewTimePageModule } from './pages/new-time/new-time.module';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 
 import * as Hammer from 'hammerjs';
@@ -51,13 +52,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserAnimationsModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
-    SocialSharing
+    SocialSharing,
+    NgxMaterialTimepickerModule
   ],
   bootstrap: [AppComponent]
 })
