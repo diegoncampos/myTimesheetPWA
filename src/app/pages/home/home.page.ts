@@ -463,12 +463,13 @@ export class HomePage implements OnInit {
       text += "\n*From:* " + moment(time.startTime).format('HH:mm') + " *- To:* " + moment(time.endTime).format('HH:mm') + " *- Total:* " + this.totalDayTime(time).toFixed(2) + "hs";
     }
     text += time.comments ? "\n*Comment:* _" + time.comments + "_" : "";
+    text += "\n\n https://mytimesheetpwa.web.app/"
 
     if (navigator.share) {
       navigator.share({
         title: 'Dairy Summary',
         text: text,
-        url: "https://mytimesheetpwa.web.app/"
+        // url: "https://mytimesheetpwa.web.app/"
       }).then()
         .catch((e) => {
           // Error!

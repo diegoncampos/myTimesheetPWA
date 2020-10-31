@@ -56,7 +56,7 @@ export class NewTimePage implements OnInit {
     let toSend = JSON.parse(JSON.stringify(this.newDate));
     toSend.startTime = moment(toSend.startTime, "HH:mm").toISOString();
     toSend.endTime = moment(toSend.endTime, "HH:mm").toISOString();
-    if (this.totalDayTime(toSend)) {
+    if (this.totalDayTime(toSend) || toSend.byProd) {
       this.modalController.dismiss(toSend);
     }
     else {
