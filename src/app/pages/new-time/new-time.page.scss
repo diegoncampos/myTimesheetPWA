@@ -6,6 +6,8 @@ ion-content.background{
         width: 263px;
         outline: none;
     }
+
+    // Hidde input underline
     ::ng-deep .mat-form-field-underline {
         display: none;
     }
@@ -22,6 +24,10 @@ ion-content.background{
     }
     ngx-material-timepicker-toggle {
         display: inline-block;
+    }
+    // Hide borders on input focus
+    input:focus {
+        outline-width: 0;
     }
 }
 
