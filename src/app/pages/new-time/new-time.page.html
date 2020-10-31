@@ -41,11 +41,20 @@
     <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.startTime"></ion-datetime>
   </ion-item> -->
 
-  <ion-item>
+  <!-- <ion-item>
     <div class="editable-dial-example">
       <ion-label>Start Time:</ion-label>
-      <ngx-timepicker-field [format]="24" [(ngModel)]="newDate.startTime"></ngx-timepicker-field>
+      <ngx-timepicker-field [format]="24" [(ngModel)]="newDate.startTime" readonly></ngx-timepicker-field>
       <ngx-material-timepicker #editableDial [enableKeyboardInput]="true" [appendToInput]="true"></ngx-material-timepicker>
+    </div>
+  </ion-item> -->
+
+  <ion-item lines="none">
+    <div class="time">
+      <ion-label>Start Time:</ion-label>
+      <input placeholder="Select Time..." [ngxTimepicker]="startTime" [format]="24" [(ngModel)]="newDate.startTime" readonly>
+      <ngx-material-timepicker-toggle [for]="startTime"></ngx-material-timepicker-toggle>
+      <ngx-material-timepicker #startTime></ngx-material-timepicker>
     </div>
   </ion-item>
 
@@ -55,11 +64,20 @@
     <ion-datetime displayFormat="HH:mm" [(ngModel)]="newDate.endTime"></ion-datetime>
   </ion-item> -->
 
-  <ion-item>
+  <!-- <ion-item>
     <div class="editable-dial-example">
       <ion-label>End Time:</ion-label>
       <ngx-timepicker-field [format]="24" [(ngModel)]="newDate.endTime"></ngx-timepicker-field>
       <ngx-material-timepicker #editableDial [enableKeyboardInput]="true" [appendToInput]="true"></ngx-material-timepicker>
+    </div>
+  </ion-item> -->
+
+  <ion-item>
+    <div class="time end">
+      <ion-label>End Time:</ion-label>
+      <input placeholder="Select Time..." [ngxTimepicker]="endTime" [format]="24" [(ngModel)]="newDate.endTime" readonly>
+      <ngx-material-timepicker-toggle [for]="endTime"></ngx-material-timepicker-toggle>
+      <ngx-material-timepicker #endTime></ngx-material-timepicker>
     </div>
   </ion-item>
 

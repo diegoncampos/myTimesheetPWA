@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonInput, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { Times } from 'src/app/models/times';
+import { NotificationsService } from 'src/app/services/notifications.service';
 
 
 @Component({
@@ -26,7 +27,11 @@ export class NewTimePage implements OnInit {
     comments: null
   };
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private modalController: ModalController,
+    private notificationsService: NotificationsService,
+
+    ) {}
   
   ngOnInit() {
     if (this.editMode) {
@@ -51,11 +56,23 @@ export class NewTimePage implements OnInit {
     let toSend = JSON.parse(JSON.stringify(this.newDate));
     toSend.startTime = moment(toSend.startTime, "HH:mm").toISOString();
     toSend.endTime = moment(toSend.endTime, "HH:mm").toISOString();
-    this.modalController.dismiss(toSend);
-    console.log("sale",toSend)
+    if (this.totalDayTime(toSend)) {
+      this.modalController.dismiss(toSend);
+    }
+    else {
+      this.notificationsService.showMessage("Please check Start/End times")
+    }
   }
 
   byProdFocus() {
     this.guestElement.setFocus();
+  }
+
+  totalDayTime(time) {
+    var duration = moment.duration(moment(time.endTime).diff(moment(time.startTime)));
+    if (time.hadLunch) {
+      duration.subtract(time.lunchTime, 'minutes');
+    }
+    return duration.asHours() > 0 ? true : false;
   }
 }

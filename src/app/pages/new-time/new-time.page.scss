@@ -3,7 +3,11 @@ ion-content.background{
     --ion-background-color: transparent !important;
 
     .datePicker {
-        width: 100%;
+        width: 263px;
+        outline: none;
+    }
+    ::ng-deep .mat-form-field-underline {
+        display: none;
     }
 }
 
@@ -11,4 +15,17 @@ ion-content.background{
     padding-left: 10px;
 }
 
-// #ion-overlay-1 > div.modal-wrapper.ion-overlay-wrapper.sc-ion-modal-ios > app-new-time > ion-content > ion-item:nth-child(1) > mat-form-field
+.time {
+    input {
+        background: transparent !important;
+        border: hidden;
+    }
+    ngx-material-timepicker-toggle {
+        display: inline-block;
+    }
+}
+
+.end {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
