@@ -463,7 +463,7 @@ export class HomePage implements OnInit {
       text += "\n*From:* " + moment(time.startTime).format('HH:mm') + " *- To:* " + moment(time.endTime).format('HH:mm') + " *- Total:* " + this.totalDayTime(time).toFixed(2) + "hs";
     }
     text += time.comments ? "\n*Comment:* _" + time.comments + "_" : "";
-    text += "\n\n https://mytimesheetpwa.web.app/"
+    text += "\n\n mytimesheet.app/"
 
     if (navigator.share) {
       navigator.share({

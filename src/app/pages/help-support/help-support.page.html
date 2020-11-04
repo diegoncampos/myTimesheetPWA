@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref='/home'></ion-back-button>
+    </ion-buttons>
+    <ion-title>Help and Support</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="background">
+
+  <ion-list lines="none">
+    <div *ngFor="let option of options; let $index=index;">
+      <ion-card>
+        <ion-card-content>
+          <ion-item (click)="option.active = !option.active">
+            <ion-label>
+              {{option.text}}
+            </ion-label>
+            <ion-buttons end>
+              <ion-icon name="arrow-down"></ion-icon>
+            </ion-buttons>
+          </ion-item>
+
+          <div *ngIf="option.active && $index == 0">
+
+            <!-- Android -->
+            <ion-slides [options]="slideOpts" pager="true" *ngIf="isAndroid">
+              <ion-slide>
+                <img src="../../../assets/addHomescreen/android/andro11.jpg">
+              </ion-slide>
+              <ion-slide>
+                <img src="../../../assets/addHomescreen/android/andro22.jpg">
+              </ion-slide>
+              <ion-slide>
+                <img src="../../../assets/addHomescreen/android/andro33.jpg">
+              </ion-slide>
+            </ion-slides>
+            <!-- IOS -->
+            <ion-slides [options]="slideOpts" pager="true" *ngIf="isIOS">
+              <ion-slide>
+                <img src="../../../assets/addHomescreen/IOS/ios11.jpg">
+              </ion-slide>
+              <ion-slide>
+                <img src="../../../assets/addHomescreen/IOS/ios22.jpg">
+              </ion-slide>
+              <ion-slide>
+                <img src="../../../assets/addHomescreen/IOS/ios33.jpg">
+              </ion-slide>
+            </ion-slides>
+            <!-- <ion-icon name="arrow-forward"  item-right></ion-icon> -->
+
+          </div>
+          <div *ngIf="option.active && $index == 1">
+            Opcion 1
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-list>
+
+</ion-content>

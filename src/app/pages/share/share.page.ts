@@ -114,7 +114,7 @@ export class SharePage implements OnInit {
       navigator.share({
         title: 'Weekly Summary',
         text: text,
-        url: "https://mytimesheetpwa.web.app/"
+        url: "https://mytimesheet.app/"
       }).then()
       .catch((e) => {
         // Error!
