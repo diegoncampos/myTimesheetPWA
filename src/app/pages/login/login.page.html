@@ -6,7 +6,7 @@
 
 <ion-content class="login">
   
-  <ion-img class="icon" src="assets/icons/icon-256x256.png"></ion-img>
+  <ion-img class="icon animate__animated animate__tada animate__delay-2s animate__slower animate__infinite" src="assets/icons/icon-256x256.png"></ion-img>
   <div class="appDescription">
     <ion-card>
       <ion-label>
@@ -35,4 +35,10 @@
     <ion-button expand="block" (click)="logIn()" [disabled]="user.password =='' || user.email =='' ">Login</ion-button>
     <ion-button expand="block" routerLink="/registration">New User</ion-button>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="none" routerLink="/help-support">
+      <ion-icon name="information"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

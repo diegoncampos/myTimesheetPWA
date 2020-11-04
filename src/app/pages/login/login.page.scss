@@ -1,6 +1,14 @@
 .login {
     --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
     --ion-background-color: transparent !important;
+    ion-item.item-has-focus > ion-label{
+        color: rgb(49, 49, 49) !important;
+    }
+    ion-item {
+        --highlight-color-valid: transparent;
+        --highlight-color-invalid: transparent;
+        --highlight-color-focused: var(--ion-color-light);
+    }
 }
 .icon {
     display: block;
@@ -27,6 +35,6 @@
         margin: 15px 0 0 0;
     }
     ion-label {
-        color: #292525;
+        color: #0e0d0d;
     }
 }
