@@ -91,7 +91,7 @@ export class SharePage implements OnInit {
       text += "\n*Total Hours:* " + this.weekInfo.totalHours.toFixed(2) + "hs";
     }
     if(this.weekInfo.totalProd > 0) {
-      text += "\n*Total Prod:* " + this.weekInfo.totalProd + "\n";
+      text += "\n*Total Prod:* " + this.weekInfo.totalProd.toFixed(2) + "\n";
     }
 
     this.currentWeek.forEach(element => {

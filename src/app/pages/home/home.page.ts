@@ -478,4 +478,16 @@ export class HomePage implements OnInit {
     }
   }
 
+  shareApp() {
+    if (navigator.share) {
+      navigator.share({
+        url: "https://mytimesheet.app"
+      }).then()
+        .catch((e) => {
+          // Error!
+          this.notificationsService.showMessage(e)
+        });
+    }
+  }
+
 }
