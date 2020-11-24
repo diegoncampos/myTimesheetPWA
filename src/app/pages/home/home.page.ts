@@ -25,7 +25,8 @@ export class HomePage implements OnInit {
   public userInfo: any = {displayName: 'User', uid:'', times: []};
   public showSpinner:boolean = true;
   public animations:any[] = ['swipeRightAnimation', 'swipeLeftAnimation', 'dateAnimation'];
-  public settings:Settings = {hourlyRate: 0, prodRate: 0, showRates: false};
+  public settings:Settings = {hourlyRate: 0, prodRate: 0, showRates: false, offlineMode: false};
+  public offLine: boolean = false;
   // public showDetails:boolean = false;
 
   constructor(
@@ -51,17 +52,36 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.offLine = !navigator.onLine;
     this.userInfo.uid = JSON.parse(localStorage.getItem('user')).uid;
-    if (typeof this.userInfo.uid !== 'undefined' && this.userInfo.uid) {
-      this.getUserInfo(this.userInfo.uid);
+    if (this.offLine && this.settings.offlineMode == true) {
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.showSpinner = false;
+    this.weekInfoUpdate();
     }
     else {
-      this.ngFireAuth.authState.subscribe(res => {
-        if (res && res.uid) {
-          this.getUserInfo(res.uid);
-        }
-      })
+      if (typeof this.userInfo.uid !== 'undefined' && this.userInfo.uid) {
+        this.getUserInfo(this.userInfo.uid);
+      }
+      else {
+        this.ngFireAuth.authState.subscribe(res => {
+          if (res && res.uid) {
+            this.getUserInfo(res.uid);
+          }
+        })
+      }
     }
+  }
+
+  swipeDown() {
+    console.log("swipeDown")
+    this.showSpinner = true;
+    // setTimeout(function () { this.ionViewWillEnter; this.showSpinner = false; }, 1000);
+
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      this.showSpinner = false; 
+    }, 1000);
   }
 
   getUserInfo(uid) {
@@ -75,9 +95,14 @@ export class HomePage implements OnInit {
           times: res.data().times
         }
 
+        if(this.settings.offlineMode) {
+          localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
+        }
+
         if (typeof res.data().settings !== 'undefined' && JSON.stringify(res.data().settings) !== 'undefined') {
           this.settings = res.data().settings;
           localStorage.setItem('userSettings', JSON.stringify(res.data().settings));
+          console.log("Settingns", this.settings)
         }
 
         this.weekInfoUpdate();
@@ -85,6 +110,10 @@ export class HomePage implements OnInit {
       },
       err => this.notificationsService.showMessage("The client is offline, please connect to the internet.", 5000)
     )
+  }
+
+  getOfflineUser() {
+    let userInfo = localStorage.getItem('userSettings');
   }
 
   // public data = {

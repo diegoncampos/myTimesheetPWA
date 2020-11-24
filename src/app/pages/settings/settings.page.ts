@@ -12,7 +12,7 @@ import { Settings } from 'src/app/models/settings';
 })
 export class SettingsPage implements OnInit {
 
-  public settings:Settings = {hourlyRate: 0, prodRate: 0, showRates: false};
+  public settings:Settings = {hourlyRate: 0, prodRate: 0, showRates: false, offlineMode: false};
   private userUid;
 
   constructor(
@@ -38,7 +38,11 @@ export class SettingsPage implements OnInit {
   }
 
   updateShowRate() {
-      this.userService.setSettings(this.userUid, this.settings);
+    this.userService.setSettings(this.userUid, this.settings);
+  }
+
+  updateOfflineMode() {
+    this.userService.updateOfflineMode(this.userUid, this.settings.offlineMode);
   }
 
 }

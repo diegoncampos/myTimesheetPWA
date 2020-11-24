@@ -45,4 +45,13 @@ export class UserService {
       settings: settings
     })
   }
+
+  updateOfflineMode(userID: string, _offlineMode: any) {
+    // Use set and merge, will merge object with existing one not replace
+    return this.afs.collection('users').doc(userID).set({
+      settings: {
+        offlineMode: _offlineMode
+      }
+    }, {merge: true})
+  }
 }

@@ -19,7 +19,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="background" scrollEvents="true" (swipeleft)="nextWeek()"  (swiperight)="previousWeek()">
+<ion-content [fullscreen]="true" class="background" scrollEvents="true" (swipeleft)="nextWeek()"  (swiperight)="previousWeek()" (pandown)="swipeDown()">
 
   <div id="dateAnimation">
     <div class="fromToDates">
@@ -104,7 +104,11 @@
   </div>
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed" #fab>
-    <ion-label id="footer" (press)="shareApp()">myTimesheet.app</ion-label>
+    <ion-label id="footer" (press)="shareApp()">myTimesheet.app</ion-label><br>
+    <ion-label *ngIf="settings.offlineMode && offLine" id="footerOffLine">Offline Mode On</ion-label>
   </ion-fab>
+  <!-- <ion-fab vertical="bottom" horizontal="center" slot="fixed" #fab>
+    <ion-label id="footerOffLine">Offline Mode</ion-label>
+  </ion-fab> -->
 
 </ion-content>

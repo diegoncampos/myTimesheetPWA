@@ -9,7 +9,7 @@
 <ion-content class="background">
 
   <div class="rates">
-    <ion-item>
+    <ion-item lines="none">
       <ion-label>Show earned money</ion-label>
       <ion-toggle color="primary" [(ngModel)]="settings.showRates" (ionChange)="updateShowRate()"></ion-toggle>
     </ion-item>
@@ -24,6 +24,13 @@
       </ion-item>
       <ion-button expand="block" (click)="saveRates()">Save</ion-button>
     </div>
+  </div>
+
+  <div class="offlineMode">
+    <ion-item lines="none">
+      <ion-label>Offline Mode (Beta)</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="settings.offlineMode" (ionChange)="updateOfflineMode()"></ion-toggle>
+    </ion-item>
   </div>
 
 </ion-content>
