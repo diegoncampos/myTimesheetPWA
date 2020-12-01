@@ -17,7 +17,7 @@ export class NewTimePage implements OnInit {
   @ViewChild('byProd', {  static: false })  guestElement: IonInput;
 
   public newDate:any = {
-    date: moment().toISOString(),
+    date: moment().startOf('day').toISOString(),
     startTime: '',
     endTime: '',
     byProd: false,
@@ -54,6 +54,7 @@ export class NewTimePage implements OnInit {
 
   saveTime() {
     let toSend = JSON.parse(JSON.stringify(this.newDate));
+    toSend.date = moment(toSend.date).toISOString();
     toSend.startTime = moment(toSend.startTime, "HH:mm").toISOString();
     toSend.endTime = moment(toSend.endTime, "HH:mm").toISOString();
     if (this.totalDayTime(toSend) || toSend.byProd) {

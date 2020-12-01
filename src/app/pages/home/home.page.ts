@@ -405,11 +405,16 @@ export class HomePage implements OnInit {
     this.currentWeek = [];
     let week = [];
 
-    // First day off week doesn't work if its added during the week, possible solution
+    /* FIX BUG: First day off week doesn't work. - PROBLEM: ISOString set day as day before, so when we check
+      the first day of the week should be one day before (just to show ui the table).
+
+      .startOf('day') set the date time (just to fix old dates saved)
+
+     **/
     let fromDate = JSON.parse(JSON.stringify(from));
 
     this.userInfo.times.forEach(elem => {
-      if (moment(elem.date).isBetween(moment(fromDate).subtract(1, "days"), to)) {
+      if (moment(elem.date).startOf('day').isBetween(moment(fromDate).subtract(1, "days"), to)) {
         week.push(elem);
       }
     })
