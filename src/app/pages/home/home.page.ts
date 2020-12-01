@@ -57,7 +57,7 @@ export class HomePage implements OnInit {
     if (this.offLine && this.settings.offlineMode == true) {
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
       this.showSpinner = false;
-    this.weekInfoUpdate();
+      this.weekInfoUpdate();
     }
     else {
       if (typeof this.userInfo.uid !== 'undefined' && this.userInfo.uid) {
@@ -405,8 +405,11 @@ export class HomePage implements OnInit {
     this.currentWeek = [];
     let week = [];
 
+    // First day off week doesn't work if its added during the week, possible solution
+    let fromDate = JSON.parse(JSON.stringify(from));
+
     this.userInfo.times.forEach(elem => {
-      if (moment(elem.date).isBetween(from, to)) {
+      if (moment(elem.date).isBetween(moment(fromDate).subtract(1, "days"), to)) {
         week.push(elem);
       }
     })
