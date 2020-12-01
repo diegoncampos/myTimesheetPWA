@@ -82,6 +82,7 @@ export class HomePage implements OnInit {
       this.ionViewWillEnter();
       this.showSpinner = false; 
     }, 1000);
+    this.weekInfoUpdate();
   }
 
   getUserInfo(uid) {
