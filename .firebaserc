@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "mytimesheetpwa"
+    "default": "mytimesheetpwa",
+    "My Timesheet": "mytimesheetpwa"
   }
 }

@@ -1,5 +1,9 @@
+$font-color: #e0e0e0;
+
 .login {
-    --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
+    // --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
+
+    --background: darkslategrey;
     --ion-background-color: transparent !important;
     ion-item.item-has-focus > ion-label{
         color: rgb(49, 49, 49) !important;
@@ -8,6 +12,39 @@
         --highlight-color-valid: transparent;
         --highlight-color-invalid: transparent;
         --highlight-color-focused: var(--ion-color-light);
+    }
+
+    ion-label {
+        color: $font-color;
+    }
+
+    ion-input {
+        color: $font-color;
+    }
+
+    //Input when focused within ion item
+    ion-item.item-has-focus > ion-label{
+        color: $font-color !important;
+    }
+
+    .title {
+        text-align: center;
+        color: floralwhite;
+        height: 45px;
+        margin: 0;
+        padding-top: 17px;
+    }
+
+    .appDescription {
+        color: $font-color;
+        text-align: center;
+        margin: 0 20px;
+        padding-top: 30px;
+    }
+
+    #signIn {
+        margin-top: 40px;
+        text-align: center;
     }
 }
 .icon {
@@ -20,21 +57,9 @@
     overflow: hidden;
 }
 .credentials {
-    // padding-top: 65px;
     margin: 20px;
 }
 .buttons {
     padding-top: 10px;
     margin: 20px;
-}
-.appDescription {
-    text-align: center;
-    margin: 0 20px;
-    ion-card {
-        padding: 20px;
-        margin: 15px 0 0 0;
-    }
-    ion-label {
-        color: #0e0d0d;
-    }
 }

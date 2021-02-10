@@ -6,16 +6,25 @@
 
 <ion-content class="login">
   
-  <ion-img class="icon animate__animated animate__tada animate__delay-2s animate__slower animate__infinite" src="assets/icons/icon-256x256.png"></ion-img>
+  <h2 class="title">My Timesheet</h2>
+  <!-- <ion-img class="icon animate__animated animate__tada animate__delay-2s animate__slower animate__infinite" src="assets/icons/icon-256x256.png"></ion-img> -->
   <div class="appDescription">
-    <ion-card>
+    <!-- <ion-card> -->
       <ion-label>
         <b>My Timesheet</b> is perfect for self-employed, freelancers, contractors, hourly workers and employees to use 
         as time card, know your working hours, automatically calculate earnings, submit time sheet to managers. 
         Start using the app for free creating a new user or logging in.
       </ion-label>
-    </ion-card>
+    <!-- </ion-card> -->
   </div>
+  <div>
+    <ion-img class="icon animate__animated animate__tada animate__delay-2s animate__slower animate__infinite" src="assets/icons/icon-256x256.png"></ion-img>
+  </div>
+
+  <div id="signIn">
+    <ion-label>Please Sign In to start keeping track of your times</ion-label>
+  </div>
+
   <div class="credentials">
     <ion-item>
       <ion-label position="floating">
@@ -28,7 +37,7 @@
         Password
       </ion-label>
       <ion-input #input type="password" [(ngModel)]="user.password"></ion-input>
-      <ion-icon [name]="showIcon" color="dark" slot="end" (click)="showPassword(input)"></ion-icon>
+      <ion-icon [name]="showIcon" color="light" slot="end" (click)="showPassword(input)"></ion-icon>
     </ion-item>
   </div>
   <div class="buttons">
@@ -38,7 +47,7 @@
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="none" routerLink="/help-support">
-      <ion-icon name="information"></ion-icon>
+      <ion-icon name="information" color="light"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

@@ -1,8 +1,11 @@
+$font-color: #e0e0e0;
+
 .required {
     color: red;
 }
 .registration {
-    --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
+    --background: darkslategrey;
+    // --background: url(../../../assets/loginBackground.jpg) 0 0/100% 100% no-repeat;
     --ion-background-color: transparent !important;
 
     form {
@@ -10,6 +13,16 @@
     }
     .passConditions {
         font-size: 0.8em;
-        color: darkslategrey;
+        color: $font-color;
+    }
+    ion-label {
+        color: $font-color;
+    }
+    ion-input {
+        color: $font-color;
+    }
+    //Input when focused within ion item
+    ion-item.item-has-focus > ion-label{
+        color: $font-color !important;
     }
 }

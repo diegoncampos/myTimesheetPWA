@@ -22,7 +22,7 @@
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
       <ion-input #inputPass type="password" [(ngModel)]="login.password" name="password"></ion-input>
-      <ion-icon [name]="showIconPass" color="dark" slot="end" (click)="showPassword(inputPass)"></ion-icon>
+      <ion-icon [name]="showIconPass" color="light" slot="end" (click)="showPassword(inputPass)"></ion-icon>
     </ion-item>
     <ion-label class="passConditions">Password must be at least 6 characters</ion-label>
 
@@ -33,7 +33,7 @@
         <span *ngIf="confPass" class="required">&#42;</span>
       </ion-label>
       <ion-input #inputCPass type="password" [(ngModel)]="login.confPassword" name="confPassword"></ion-input>
-      <ion-icon [name]="showIconCPass" color="dark" slot="end" (click)="showPassword(inputCPass)"></ion-icon>
+      <ion-icon [name]="showIconCPass" color="light" slot="end" (click)="showPassword(inputCPass)"></ion-icon>
     </ion-item>
 
     <ion-row>
