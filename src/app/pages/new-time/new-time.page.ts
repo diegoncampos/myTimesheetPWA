@@ -3,6 +3,10 @@ import { IonInput, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { Times } from 'src/app/models/times';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { Task, Settings } from 'src/app/models/settings';
+import { Router } from '@angular/router';
+
+
 
 
 @Component({
@@ -26,10 +30,14 @@ export class NewTimePage implements OnInit {
     lunchTime: 30,
     comments: null
   };
+  public settings:Settings;
+  public selectedTask: Task = {name: "", prodRate: null, hourlyRate: null};
+  public createTaskMessage: boolean = false;
 
   constructor(
     private modalController: ModalController,
     private notificationsService: NotificationsService,
+    private router: Router
 
     ) {}
   
@@ -46,6 +54,18 @@ export class NewTimePage implements OnInit {
         comments: this.time.comments
       };
     }
+
+    let set = localStorage.getItem('userSettings');
+    if (typeof set !== 'undefined' && set) {
+      let settings = JSON.parse(set);
+      if(!settings.tasks) {
+        settings.tasks = [{name: 'Default Task', hourlyRate: null, prodRate: null}];
+        this.selectedTask = settings.tasks;
+        this.createTaskMessage = true;
+      }
+      console.log("ACA: ", settings)
+      this.settings = settings;
+    }
   }
 
   closeModal() {
@@ -57,6 +77,7 @@ export class NewTimePage implements OnInit {
     toSend.date = moment(toSend.date).toISOString();
     toSend.startTime = moment(toSend.startTime, "HH:mm").toISOString();
     toSend.endTime = moment(toSend.endTime, "HH:mm").toISOString();
+    toSend.task = this.selectedTask;
     if (this.totalDayTime(toSend) || toSend.byProd) {
       this.modalController.dismiss(toSend);
     }
@@ -75,5 +96,26 @@ export class NewTimePage implements OnInit {
       duration.subtract(time.lunchTime, 'minutes');
     }
     return duration.asHours() > 0 ? true : false;
+  }
+
+  readyToSave() {
+    let allowSave: boolean = true;
+
+    //By Prod
+    if(this.newDate.byProd && this.selectedTask.name !== '' && this.newDate.quantity > 0) {
+      allowSave = false;
+    }
+
+    //By Time
+    if(!this.newDate.byProd && this.newDate.startTime !== '' && this.newDate.endTime !== '' && this.selectedTask.name !== '') {
+      allowSave = false;
+    }
+
+    return allowSave;
+  }
+
+  goToSettings() {
+    this.router.navigateByUrl('/settings');
+    this.modalController.dismiss();
   }
 }

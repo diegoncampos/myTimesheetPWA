@@ -1,3 +1,5 @@
+import { Task } from 'src/app/models/settings';
+
 export interface Times {
     date: string,
     startTime: string,
@@ -6,5 +8,6 @@ export interface Times {
     quantity: number,
     hadLunch?: boolean,
     lunchTime?: number,
-    comments?: string
+    comments?: string,
+    task:Task
 }

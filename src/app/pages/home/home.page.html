@@ -73,6 +73,8 @@
               <ion-label>{{time.date | date: 'EE dd MMM yyyy'}}</ion-label>
             </ion-item>
 
+            <ion-label class="ion-text-center" id="taskName" [ngStyle]="{color: time.task && time.task.color? time.task.color : 'red'}">{{time.task? time.task.name: ''}}</ion-label>
+
             <ion-item *ngIf="time.byProd">
               <ion-label><b>Quantity:</b></ion-label>
               <ion-label>{{time.quantity |  number : '1.2-2'}}</ion-label>

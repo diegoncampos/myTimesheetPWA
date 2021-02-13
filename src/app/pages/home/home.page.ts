@@ -7,9 +7,8 @@ import * as moment from 'moment';
 import { NotificationsService } from '../../services/notifications.service';
 import { UserService } from '../../services/user.service'
 import { Times } from 'src/app/models/times';
-import { Settings } from 'src/app/models/settings';
 import { AngularFireAuth } from '@angular/fire/auth';
-
+import { Settings } from 'src/app/models/settings';
 
 
 @Component({
@@ -25,9 +24,8 @@ export class HomePage implements OnInit {
   public userInfo: any = {displayName: 'User', uid:'', times: []};
   public showSpinner:boolean = true;
   public animations:any[] = ['swipeRightAnimation', 'swipeLeftAnimation', 'dateAnimation'];
-  public settings:Settings = {hourlyRate: 0, prodRate: 0, showRates: false, offlineMode: false};
+  public settings:Settings = {showRates: false, offlineMode: false, tasks: []};
   public offLine: boolean = false;
-  // public showDetails:boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -169,7 +167,8 @@ export class HomePage implements OnInit {
           quantity: newDate.quantity,
           hadLunch: newDate.byProd? false : newDate.hadLunch,
           lunchTime: newDate.byProd? null : newDate.lunchTime,
-          comments: newDate.comments
+          comments: newDate.comments,
+          task: newDate.task
         }
         this.userInfo.times.push(newTime);
         let uid = JSON.parse(localStorage.getItem('user')).uid;
@@ -481,11 +480,13 @@ export class HomePage implements OnInit {
 
   showTotalsRate(elem) {
     if (elem === 'hourlyRate' && this.settings.showRates) {
-      let total = this.settings.hourlyRate * this.weekInfo.totalHours;
+      // let total = this.settings.hourlyRate * this.weekInfo.totalHours;
+      let total: number = 0;
       return `<strong> - $${total.toFixed(2)}</strong>`
     }
     if (elem === 'prodRate' && this.settings.showRates) {
-      let total = this.settings.prodRate * this.weekInfo.totalProd;
+      // let total = this.settings.prodRate * this.weekInfo.totalProd;
+      let total : number = 0;
       return `<strong> - $${total.toFixed(2)}</strong>`
     }
   }

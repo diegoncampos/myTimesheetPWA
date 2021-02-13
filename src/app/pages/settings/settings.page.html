@@ -8,29 +8,56 @@
 </ion-header>
 <ion-content class="background">
 
-  <div class="rates">
-    <ion-item lines="none">
-      <ion-label>Show earned money</ion-label>
-      <ion-toggle color="primary" [(ngModel)]="settings.showRates" (ionChange)="updateShowRate()"></ion-toggle>
-    </ion-item>
-    <div *ngIf="settings.showRates">
-      <ion-item>
-        <ion-label position="floating">Hourly rate</ion-label>
-        <ion-input [(ngModel)]="settings.hourlyRate"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Production pay</ion-label>
-        <ion-input [(ngModel)]="settings.prodRate"></ion-input>
-      </ion-item>
-      <ion-button expand="block" (click)="saveRates()">Save</ion-button>
-    </div>
-  </div>
-
   <div class="offlineMode">
     <ion-item lines="none">
       <ion-label>Offline Mode (Beta)</ion-label>
       <ion-toggle color="primary" [(ngModel)]="settings.offlineMode" (ionChange)="updateOfflineMode()"></ion-toggle>
     </ion-item>
+  </div>
+
+  <div class="rates">
+    <ion-item lines="none">
+      <ion-label>Show earned money</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="settings.showRates" (ionChange)="updateShowRate()"></ion-toggle>
+    </ion-item>
+  </div>
+  <div class="tasksList">
+    <ion-item>
+      Tasks List
+    </ion-item>
+    <ion-list *ngFor="let task of settings.tasks; let $index=index;">
+      <ion-row>
+        <ion-col col-6>
+
+          <ion-item lines="none">
+            <ion-label position="floating">Task Name</ion-label>
+            <ion-input [(ngModel)]="task.name"></ion-input>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-label position="floating">Hourly rate</ion-label>
+            <ion-input type="number" [(ngModel)]="task.hourlyRate"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Production pay</ion-label>
+            <ion-input type="number" [(ngModel)]="task.prodRate"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-item lines="none">
+          <ion-button (click)="deleteTask($index)" fill="clear" color="danger">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+      </ion-row>
+
+
+    </ion-list>
+    <ion-button expand="block" (click)="addTask()" color="secondary">Add New Task</ion-button>
+
+    <ion-button expand="block" (click)="saveRates()">Save</ion-button>
   </div>
 
 </ion-content>
