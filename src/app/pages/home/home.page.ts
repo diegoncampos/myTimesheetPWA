@@ -18,7 +18,7 @@ import { Settings } from 'src/app/models/settings';
 })
 export class HomePage implements OnInit {
 
-  public weekInfo = { from: null, to: null, totalHours: 0, totalProd: 0 };
+  public weekInfo = { from: null, to: null, totalHours: 0, totalProd: 0, totalHourlyAmount: 0, totalProdAmount: 0 };
   public searchMode: boolean = false;
   public currentWeek: any = [];
   public userInfo: any = {displayName: 'User', uid:'', times: []};
@@ -198,7 +198,9 @@ export class HomePage implements OnInit {
                 quantity: newDate.quantity,
                 hadLunch: newDate.byProd ? false : newDate.hadLunch,
                 lunchTime: newDate.byProd ? null : newDate.lunchTime,
-                comments: newDate.comments
+                comments: newDate.comments,
+                task: newDate.task
+
               };
             let uid = JSON.parse(localStorage.getItem('user')).uid;
             this.userService.addTime(uid, this.userInfo.times)
@@ -304,6 +306,7 @@ export class HomePage implements OnInit {
   getWeeklyHours() {
 
     let count: number = 0;
+    let countAmount: number = 0;
     this.currentWeek.forEach(element => {
 
       if (!element.byProd && element.endTime !== '' && element.startTime !== '') {
@@ -318,22 +321,26 @@ export class HomePage implements OnInit {
         var hours = duration.asHours();
 
         count = hours > 0 ? count + hours : count;
+        countAmount = hours > 0 && element.task && element.task.hourlyRate? countAmount + (hours * element.task.hourlyRate) : countAmount;
 
       }
     });
     this.weekInfo.totalHours = count;
-
+    this.weekInfo.totalHourlyAmount = countAmount;
   }
 
   getWeeklyProduction() {
 
     let count: number = 0;
+    let countAmount: number = 0;
     this.currentWeek.forEach(element => {
       if (element.byProd && element.quantity !== 0) {
         count = +count + +element.quantity;
+        countAmount = +element.quantity > 0 && element.task && element.task.prodRate? countAmount + (+element.quantity * element.task.prodRate) : countAmount;
       }
     });
     this.weekInfo.totalProd = count;
+    this.weekInfo.totalProdAmount = countAmount;
   }
 
   nextWeek() {
@@ -476,19 +483,6 @@ export class HomePage implements OnInit {
       elem.showDetails = false;
     });
     time.showDetails = !time.showDetails;
-  }
-
-  showTotalsRate(elem) {
-    if (elem === 'hourlyRate' && this.settings.showRates) {
-      // let total = this.settings.hourlyRate * this.weekInfo.totalHours;
-      let total: number = 0;
-      return `<strong> - $${total.toFixed(2)}</strong>`
-    }
-    if (elem === 'prodRate' && this.settings.showRates) {
-      // let total = this.settings.prodRate * this.weekInfo.totalProd;
-      let total : number = 0;
-      return `<strong> - $${total.toFixed(2)}</strong>`
-    }
   }
 
   shareDay(time) {

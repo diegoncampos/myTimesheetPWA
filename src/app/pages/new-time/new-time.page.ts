@@ -51,19 +51,20 @@ export class NewTimePage implements OnInit {
         quantity: this.time.quantity,
         hadLunch: this.time.hadLunch,
         lunchTime: this.time.lunchTime,
-        comments: this.time.comments
+        comments: this.time.comments,
+        task: this.time.task
       };
+      this.selectedTask = this.time.task;
     }
 
     let set = localStorage.getItem('userSettings');
     if (typeof set !== 'undefined' && set) {
       let settings = JSON.parse(set);
       if(!settings.tasks) {
-        settings.tasks = [{name: 'Default Task', hourlyRate: null, prodRate: null}];
-        this.selectedTask = settings.tasks;
+        settings.tasks = [{name: 'Default Task', hourlyRate: 0, prodRate: 0}];
+        this.selectedTask = settings.tasks[0];
         this.createTaskMessage = true;
       }
-      console.log("ACA: ", settings)
       this.settings = settings;
     }
   }

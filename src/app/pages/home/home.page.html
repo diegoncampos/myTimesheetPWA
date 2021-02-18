@@ -31,10 +31,10 @@
       </div>
     </div>
     <div class="totalHours" *ngIf="weekInfo.totalHours !== 0">
-      <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}}</strong> <span [innerHTML]="showTotalsRate('hourlyRate')"></span>
+      <strong id="total">Total hours: {{weekInfo.totalHours |  number : '1.2-2'}} - ${{weekInfo.totalHourlyAmount}}</strong>
     </div>
     <div class="totalHours" *ngIf="weekInfo.totalProd !== 0">
-      <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}}</strong> <span [innerHTML]="showTotalsRate('prodRate')"></span>
+      <strong id="total">Total production: {{weekInfo.totalProd |  number : '1.2-2'}} - ${{weekInfo.totalProdAmount}}</strong>
     </div>
   </div>
 

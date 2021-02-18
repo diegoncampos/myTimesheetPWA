@@ -102,7 +102,7 @@
 
   <ion-item>
     <ion-label>Task</ion-label>
-    <ion-select [(ngModel)]="selectedTask">
+    <ion-select [(ngModel)]="selectedTask" [placeholder]="selectedTask.name ? selectedTask.name : 'Tap to select..'">
       <ion-select-option *ngFor="let task of settings.tasks" [value]="task">{{task.name}}</ion-select-option>
     </ion-select>
   </ion-item>
